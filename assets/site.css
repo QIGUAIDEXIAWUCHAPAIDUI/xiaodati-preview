@@ -93,6 +93,15 @@ a { color: inherit; }
   letter-spacing: 0.04em;
 }
 
+.nav {
+  border: 1px solid var(--ink);
+  background: transparent;
+  padding: 6px 12px;
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 .search {
   margin-left: auto;
   width: min(280px, 42vw);
@@ -301,6 +310,82 @@ a { color: inherit; }
   letter-spacing: 0.08em;
 }
 
+.notice {
+  width: min(780px, calc(100% - 40px));
+  margin: 0 auto 72px;
+}
+
+.notice h2 {
+  margin: 8px 0 8px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.notice .who {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 14px;
+}
+
+.notice h3 {
+  margin: 32px 0 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ink);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.notice p,
+.notice li {
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.notice ul,
+.notice ol {
+  margin: 8px 0 0;
+  padding-left: 1.3em;
+}
+
+.notice li { margin: 6px 0; }
+
+.poster {
+  margin: 8px 0 0;
+}
+
+.poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #111;
+  border: 1px solid var(--line);
+}
+
+.poster figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 12px;
+}
+
+.price {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 14px;
+}
+
+.price th,
+.price td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
 .foot {
   width: min(1120px, calc(100% - 40px));
   margin: 10px auto 40px;
@@ -353,6 +438,7 @@ a { color: inherit; }
 
 @media (max-width: 680px) {
   .top-row { align-items: flex-start; flex-wrap: wrap; padding: 12px 0; }
+  .nav { margin-left: auto; }
   .search { width: 100%; margin-left: 0; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
 }
