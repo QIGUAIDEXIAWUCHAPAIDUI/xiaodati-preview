@@ -384,6 +384,60 @@ a { color: inherit; }
   font-size: 13px;
 }
 
+.faq {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 4px solid #1f6b45;
+}
+
+.faq-item {
+  margin: 0 0 14px;
+  padding: 12px 16px 4px;
+  background: #fffaf3;
+  border-left: 4px solid #1f6b45;
+}
+
+.faq-item:nth-of-type(even) {
+  background: #f8f1e4;
+  border-left-color: #9a5b12;
+}
+
+.faq-item h3 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 17px;
+}
+
+.qnum {
+  margin-right: 6px;
+  color: var(--seal);
+}
+
+.fit {
+  color: #1f6b45;
+  font-weight: 700;
+}
+
+.unfit,
+.ban {
+  color: var(--seal);
+  font-weight: 700;
+}
+
+.afterword {
+  margin-top: 8px;
+  padding: 4px 18px 8px;
+  background: #efe6d4;
+  border-left: 4px solid #241c16;
+}
+
+.afterword h3 {
+  margin-top: 14px;
+  padding-top: 0;
+  border-top: 0;
+}
+
 .notice h3 {
   margin: 32px 0 12px;
   padding-top: 12px;
