@@ -118,7 +118,7 @@ def subject_of(text: str) -> str:
 def page_ranges(n: int) -> tuple[list[int], list[int], list[int]]:
     if n <= 0:
         return [], [], []
-    front = list(range(1, min(5, n) + 1))
+    front = list(range(1, min(8, n) + 1))
     back = list(range(max(1, n - 4), n + 1))
     if n <= 5:
         mid = list(range(1, n + 1))
@@ -227,7 +227,7 @@ def write_catalog(books: list[dict]) -> None:
     payload = {
         "generated": "2026-09-27",
         "source": "教材小大题_最终版",
-        "note": "只收录文件名以「小大题_」开头的笔记。每本只放开头、正中、结尾各最多五页。",
+        "note": "",
     }
     text = (
         "window.SITE = "

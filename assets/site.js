@@ -130,7 +130,7 @@
       }).join("");
       app.innerHTML =
         '<header class="top"><div class="wrap top-row">' +
-          '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题样张</h1><p>开头五页 · 正中五页 · 最后五页</p></span></button>' +
+          '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题系列笔记预览站</h1><p>笔记展示开头·正中·最后部分页码</p></span></button>' +
           '<button class="nav" type="button" data-notice="1">购买说明</button>' +
           '<input class="search" type="text" lang="zh-CN" placeholder="搜书名、作者" value="' + esc(state.q) + '" aria-label="搜索" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
         "</div><div class=\"wrap filters\">" + chips + "</div></header>" +
@@ -144,7 +144,7 @@
   function renderNotice() {
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题样张</h1><p>返回目录</p></span></button>' +
+        '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
         '<button class="nav" type="button" data-notice="1">购买说明</button>' +
       "</div></header>" +
       '<article class="notice">' +
@@ -293,7 +293,7 @@
     }).join("");
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题样张</h1><p>返回目录</p></span></button>' +
+        '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
         '<button class="nav" type="button" data-notice="1">购买说明</button>' +
       "</div></header>" +
       '<article class="book"><button class="back" type="button" data-home="1">← 全部教材</button>' +
