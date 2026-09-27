@@ -1,6 +1,5 @@
 (function () {
   const books = window.BOOKS || [];
-  const site = window.SITE || {};
   const app = document.getElementById("app");
   const subjects = ["全部"];
   books.forEach(function (book) {
@@ -135,8 +134,7 @@
           '<button class="nav" type="button" data-notice="1">购买说明</button>' +
           '<input class="search" type="text" lang="zh-CN" placeholder="搜书名、作者" value="' + esc(state.q) + '" aria-label="搜索" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
         "</div><div class=\"wrap filters\">" + chips + "</div></header>" +
-        '<main class="wrap" id="catalog"></main>' +
-        '<p class="foot">只收录文件名以「小大题_」开头的笔记。样张只含每本开头、正中、结尾各最多五页。材料取自《' + esc(site.source || "教材小大题_最终版") + "》，生成于 " + esc(site.generated || "") + "。全文不放在站上。</p>";
+        '<main class="wrap" id="catalog"></main>';
       bindSearch(app.querySelector(".search"));
       window.scrollTo(0, state.scroll || 0);
     }
