@@ -137,9 +137,8 @@ def selected_pdfs() -> list[Path]:
     for path in sorted(SRC.glob("*.pdf")):
         if path.name in SKIP:
             continue
-        if path.name.startswith(
-            ("小大题_", "小大题TD_", "小大题专栏_", "公式专题_", "计算题_", "量表_", "832补记_")
-        ):
+        # 只收「小大题_」开头。TD、专栏、公式专题、计算题、量表、补记先不收。
+        if path.name.startswith("小大题_"):
             files.append(path)
     return files
 
@@ -204,6 +203,20 @@ def render_book(book: dict) -> str | None:
     return None
 
 
+def drop_unlisted(books: list[dict]) -> int:
+    keep = {book["id"] for book in books}
+    removed = 0
+    if not PREVIEW.exists():
+        return 0
+    for folder in PREVIEW.iterdir():
+        if folder.is_dir() and folder.name not in keep:
+            for child in folder.iterdir():
+                child.unlink()
+            folder.rmdir()
+            removed += 1
+    return removed
+
+
 def write_catalog(books: list[dict]) -> None:
     public = []
     for book in books:
@@ -212,7 +225,7 @@ def write_catalog(books: list[dict]) -> None:
     payload = {
         "generated": "2026-09-27",
         "source": "教材小大题_最终版",
-        "note": "每本只放开头、正中、结尾各最多五页。",
+        "note": "只收录文件名以「小大题_」开头的笔记。每本只放开头、正中、结尾各最多五页。",
     }
     text = (
         "window.SITE = "
@@ -242,6 +255,7 @@ def main() -> int:
             print(f"{book['subject']}\t{book['kind']}\t{book['pages']}\t{book['title']}", flush=True)
         return 0
     PREVIEW.mkdir(parents=True, exist_ok=True)
+    print(f"removed {drop_unlisted(books)}", flush=True)
     errors = []
     for i, book in enumerate(books, 1):
         err = render_book(book)

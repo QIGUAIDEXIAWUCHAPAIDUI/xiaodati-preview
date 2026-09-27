@@ -105,7 +105,7 @@
         '<input class="search" type="search" placeholder="搜书名、作者" value="' + esc(state.q) + '" aria-label="搜索">' +
       "</div><div class=\"wrap filters\">" + chips + "</div></header>" +
       '<main class="wrap"><p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body + "</main>" +
-      '<p class="foot">样张只含每本开头、正中、结尾各最多五页。材料取自《' + esc(site.source || "教材小大题_最终版") + "》，生成于 " + esc(site.generated || "") + "。全文不放在站上。</p>";
+      '<p class="foot">只收录文件名以「小大题_」开头的笔记。样张只含每本开头、正中、结尾各最多五页。材料取自《' + esc(site.source || "教材小大题_最终版") + "》，生成于 " + esc(site.generated || "") + "。全文不放在站上。</p>";
     const input = app.querySelector(".search");
     input.addEventListener("input", function () {
       state.q = input.value;
