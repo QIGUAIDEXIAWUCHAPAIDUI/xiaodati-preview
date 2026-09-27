@@ -344,7 +344,7 @@
           '<label>作者、书名和版次<input name="book" type="text" placeholder="于圣《文学疗愈》第七版" autocomplete="off"></label>' +
           '<label>真实微信联系方式（必填）<input name="wechat" type="text" placeholder="本人正在使用的微信号" autocomplete="off"></label>' +
           '<p class="request-limit">目前只整理这些学科的笔记：管理学、社会学、教育学、政治学、经济学（文）、统计学（文）。超出这个范围的，先不收录。</p>' +
-          '<button type="submit">提交反馈</button>' +
+          '<p class="request-actions"><button type="submit">提交反馈</button><span class="request-hours">收录开放时间：9:00–23:00</span></p>' +
           '<p class="request-note" role="status"></p>' +
         "</form>" +
       "</article>";

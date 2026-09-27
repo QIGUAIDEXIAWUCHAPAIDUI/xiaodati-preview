@@ -102,8 +102,24 @@ a { color: inherit; }
   font-weight: 600;
 }
 
-.request button {
+.request-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-top: 14px;
+}
+
+.request-actions button {
+  margin-top: 0;
+}
+
+.request-hours {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.request button {
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
