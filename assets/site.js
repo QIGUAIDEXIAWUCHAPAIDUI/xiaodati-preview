@@ -1,10 +1,21 @@
 (function () {
   const books = window.BOOKS || [];
   const app = document.getElementById("app");
-  const subjects = ["全部"];
-  books.forEach(function (book) {
-    if (subjects.indexOf(book.subject) < 0) subjects.push(book.subject);
-  });
+
+  function subjectOrder() {
+    const counts = {};
+    books.forEach(function (book) {
+      counts[book.subject] = (counts[book.subject] || 0) + 1;
+    });
+    return Object.keys(counts).sort(function (a, b) {
+      if (a === "综合") return -1;
+      if (b === "综合") return 1;
+      if (counts[b] !== counts[a]) return counts[b] - counts[a];
+      return a.localeCompare(b, "zh");
+    });
+  }
+
+  const subjects = ["全部"].concat(subjectOrder());
 
   const state = {
     q: "",
@@ -80,6 +91,10 @@
       }
       group.books.push(book);
     });
+    const order = subjectOrder();
+    groups.sort(function (a, b) {
+      return order.indexOf(a.subject) - order.indexOf(b.subject);
+    });
     const body = groups.length
       ? groups.map(function (group) {
           const cards = group.books.map(function (book) {
@@ -95,6 +110,20 @@
         }).join("")
       : '<p class="empty">没有对上的教材。</p>';
     return '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body;
+  }
+
+  function bindRequest(form) {
+    const note = form.querySelector(".request-note");
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const book = form.book.value.trim();
+      const wechat = form.wechat.value.trim();
+      if (!book || !wechat) {
+        note.textContent = "请写清作者、书名和版次，并填写真实微信。";
+        return;
+      }
+      note.textContent = "已填好。请保持这个微信可被搜索，方便回复这本笔记是否整理。";
+    });
   }
 
   function bindSearch(input) {
@@ -130,12 +159,24 @@
       }).join("");
       app.innerHTML =
         '<header class="top"><div class="wrap top-row">' +
-          '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题系列笔记预览站</h1><p>笔记展示开头·正中·最后部分页码</p></span></button>' +
+          '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>笔记展示开头·正中·最后部分页码</p></span></button>' +
           '<button class="nav" type="button" data-notice="1">购买说明</button>' +
           '<input class="search" type="text" lang="zh-CN" placeholder="搜书名、作者" value="' + esc(state.q) + '" aria-label="搜索" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
         "</div><div class=\"wrap filters\">" + chips + "</div></header>" +
-        '<main class="wrap" id="catalog"></main>';
+        '<main class="wrap">' +
+          '<form class="request" novalidate>' +
+            "<h2>缺失笔记需求反馈</h2>" +
+            "<p>目录里没有的教材，可以留在这里。请写作者、书名和版次，例如：于圣《文学疗愈》第七版。</p>" +
+            '<label>作者、书名和版次<input name="book" type="text" placeholder="于圣《文学疗愈》第七版" autocomplete="off"></label>' +
+            '<label>真实微信联系方式（必填）<input name="wechat" type="text" placeholder="本人正在使用的微信号" autocomplete="off"></label>' +
+            '<p class="request-limit">目前只整理这些学科的笔记：管理学、社会学、教育学、政治学、经济学（文）、统计学（文）。超出这个范围的，先不收录。</p>' +
+            '<button type="submit">提交反馈</button>' +
+            '<p class="request-note" role="status"></p>' +
+          "</form>" +
+          '<div id="catalog"></div>' +
+        "</main>";
       bindSearch(app.querySelector(".search"));
+      bindRequest(app.querySelector(".request"));
       window.scrollTo(0, state.scroll || 0);
     }
     paintCatalog();
@@ -144,7 +185,7 @@
   function renderNotice() {
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
+        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
         '<button class="nav" type="button" data-notice="1">购买说明</button>' +
       "</div></header>" +
       '<article class="notice">' +
@@ -293,7 +334,7 @@
     }).join("");
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span class="seal">题</span><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
+        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
         '<button class="nav" type="button" data-notice="1">购买说明</button>' +
       "</div></header>" +
       '<article class="book"><button class="back" type="button" data-home="1">← 全部教材</button>' +

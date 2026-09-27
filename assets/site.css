@@ -56,6 +56,67 @@ a { color: inherit; }
   padding-top: 4px;
 }
 
+.request {
+  margin: 22px 0 6px;
+  padding: 16px 18px 12px;
+  background: #fffaf3;
+  border-left: 4px solid var(--seal);
+}
+
+.request h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.request p,
+.request label,
+.request button {
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.request label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.request input {
+  display: block;
+  width: min(520px, 100%);
+  margin-top: 6px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  font: inherit;
+  font-weight: 400;
+  outline: none;
+}
+
+.request-limit {
+  margin-bottom: 0;
+  color: #9a5b12;
+  font-weight: 600;
+}
+
+.request button {
+  margin-top: 14px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.request-note {
+  min-height: 1.5em;
+  color: var(--seal);
+  font-weight: 600;
+}
+
 .brand {
   display: flex;
   align-items: center;
