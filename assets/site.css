@@ -154,6 +154,13 @@ a { color: inherit; }
   letter-spacing: 0.04em;
 }
 
+.navs {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .nav {
   border: 1px solid var(--ink);
   background: transparent;
@@ -163,8 +170,13 @@ a { color: inherit; }
   cursor: pointer;
 }
 
+.nav[aria-current="page"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 .search {
-  margin-left: auto;
+  margin-left: 14px;
   width: min(280px, 42vw);
   border: 0;
   border-bottom: 1px solid var(--ink);
@@ -608,7 +620,7 @@ a { color: inherit; }
 
 @media (max-width: 680px) {
   .top-row { align-items: flex-start; flex-wrap: wrap; padding: 12px 0; }
-  .nav { margin-left: auto; }
+  .navs { margin-left: 0; }
   .search { width: 100%; margin-left: 0; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
 }
