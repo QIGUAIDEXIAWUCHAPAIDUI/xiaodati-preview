@@ -131,7 +131,24 @@
         note.textContent = "请写清作者、书名和版次，并填写真实微信。";
         return;
       }
-      note.textContent = "已填好。请保持这个微信可被搜索，方便回复这本笔记是否整理。";
+      note.textContent = "正在收录…";
+      fetch("collector.txt?t=" + Date.now())
+        .then(function (res) { return res.text(); })
+        .then(function (url) {
+          return fetch(url.trim(), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ book: book, wechat: wechat })
+          });
+        })
+        .then(function (res) {
+          if (!res.ok) throw new Error("bad");
+          note.textContent = "已收录。请保持这个微信可被搜索，方便回复这本笔记是否整理。";
+          form.reset();
+        })
+        .catch(function () {
+          note.textContent = "这次没有送进收录表，请稍后再试。";
+        });
     });
   }
 
