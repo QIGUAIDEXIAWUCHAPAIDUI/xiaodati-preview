@@ -127,6 +127,13 @@ a { color: inherit; }
   cursor: pointer;
 }
 
+.request button:disabled {
+  border-color: #c8bfb2;
+  background: #e6dfd4;
+  color: #8a7f72;
+  cursor: not-allowed;
+}
+
 .request-note {
   min-height: 1.5em;
   color: var(--seal);
