@@ -95,6 +95,11 @@
     groups.sort(function (a, b) {
       return order.indexOf(a.subject) - order.indexOf(b.subject);
     });
+    groups.forEach(function (group) {
+      group.books.sort(function (a, b) {
+        return a.title.localeCompare(b.title, "zh", { numeric: true, sensitivity: "base" });
+      });
+    });
     const body = groups.length
       ? groups.map(function (group) {
           const cards = group.books.map(function (book) {
