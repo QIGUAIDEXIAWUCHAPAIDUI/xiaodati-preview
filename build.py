@@ -137,7 +137,9 @@ def selected_pdfs() -> list[Path]:
     for path in sorted(SRC.glob("*.pdf")):
         if path.name in SKIP:
             continue
-        # 只收「小大题_」开头。TD、专栏、公式专题、计算题、量表、补记先不收。
+        # 只收「小大题_」开头。TD、专栏、公式专题、计算题、量表、补记，以及华理综合类，先不收。
+        if "华东理工大学" in path.name:
+            continue
         if path.name.startswith("小大题_"):
             files.append(path)
     return files

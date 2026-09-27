@@ -322,11 +322,66 @@ a { color: inherit; }
   line-height: 1.3;
 }
 
-.notice .who {
-  margin: 0 0 18px;
+.kicker {
+  margin: 0 0 12px;
+  color: var(--seal);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.panel {
+  margin: 22px 0;
+  padding: 4px 18px 12px;
+}
+
+.panel h3 {
+  margin-top: 14px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.panel-ink {
+  background: #efe6d4;
+  border-left: 4px solid #241c16;
+}
+
+.panel-note {
+  background: #e7f0ea;
+  border-left: 4px solid #1f6b45;
+}
+
+.panel-price {
+  background: #f8f1e4;
+  border-left: 4px solid #9a5b12;
+}
+
+.panel-stop {
+  background: #f8e8e4;
+  border-left: 4px solid var(--seal);
+}
+
+.spot b,
+.price b,
+.yen {
+  color: var(--seal);
+  font-weight: 700;
+}
+
+.mark {
+  color: #1f6b45;
+  font-weight: 700;
+}
+
+.close-line {
+  color: var(--seal);
+  font-weight: 700;
+}
+
+.dated {
   color: var(--muted);
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .notice h3 {
