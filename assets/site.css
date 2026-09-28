@@ -607,6 +607,10 @@ a { color: inherit; }
   text-align: right;
 }
 
+.visit-raw {
+  display: none !important;
+}
+
 .foot {
   width: min(1120px, calc(100% - 40px));
   margin: 10px auto 40px;
