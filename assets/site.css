@@ -591,6 +591,15 @@ a { color: inherit; }
   vertical-align: top;
 }
 
+.visit-count {
+  width: min(1120px, calc(100% - 40px));
+  margin: 4px auto 28px;
+  color: var(--muted);
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
 .foot {
   width: min(1120px, calc(100% - 40px));
   margin: 10px auto 40px;
