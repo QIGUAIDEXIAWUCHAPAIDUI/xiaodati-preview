@@ -80,6 +80,14 @@ def clean_filename(name: str) -> str:
     return re.sub(r"\s+", "", stem).strip()
 
 
+def filename_title(filename: str) -> str:
+    stem = filename[:-4] if filename.lower().endswith(".pdf") else filename
+    for prefix in ("小大题TD_", "小大题专栏_", "小大题_", "公式专题_", "计算题_", "量表_", "832补记_"):
+        if stem.startswith(prefix):
+            return stem[len(prefix):].strip()
+    return stem.strip()
+
+
 def cover_title(doc: pymupdf.Document, filename: str) -> str:
     lines = [ln.strip() for ln in doc[0].get_text("text").splitlines() if ln.strip()]
     title = ""
@@ -137,9 +145,7 @@ def selected_pdfs() -> list[Path]:
     for path in sorted(SRC.glob("*.pdf")):
         if path.name in SKIP:
             continue
-        # 只收「小大题_」开头。TD、专栏、公式专题、计算题、量表、补记，以及华理综合类，先不收。
-        if "华东理工大学" in path.name:
-            continue
+        # 只收「小大题_」开头。TD、专栏、公式专题、计算题、量表、补记不收。
         if path.name.startswith("小大题_"):
             files.append(path)
     return files
@@ -151,7 +157,8 @@ def collect() -> list[dict]:
         doc = pymupdf.open(path)
         try:
             n = doc.page_count
-            title = cover_title(doc, path.name)
+            # 华理综合封面往往写到科目代码就停，方向写在文件名里。
+            title = filename_title(path.name) if "华东理工大学" in path.name else cover_title(doc, path.name)
             front, mid, back = page_ranges(n)
             books.append(
                 {
@@ -219,6 +226,14 @@ def drop_unlisted(books: list[dict]) -> int:
     return removed
 
 
+def load_catalog() -> list[dict]:
+    text = (SITE / "catalog.js").read_text(encoding="utf-8")
+    raw = text.split("window.BOOKS = ", 1)[1].strip()
+    if raw.endswith(";"):
+        raw = raw[:-1]
+    return json.loads(raw)
+
+
 def write_catalog(books: list[dict]) -> None:
     public = []
     for book in books:
@@ -239,7 +254,32 @@ def write_catalog(books: list[dict]) -> None:
     (SITE / "catalog.js").write_text(text, encoding="utf-8")
 
 
+def add_missing() -> int:
+    existing = load_catalog()
+    known = {book["file"] for book in existing}
+    added = [book for book in collect() if book["file"] not in known]
+    print(f"add {len(added)}", flush=True)
+    errors = []
+    for book in added:
+        err = render_book(book)
+        if err:
+            errors.append(err)
+            print(f"FAIL {book['file']}: {err}", flush=True)
+            continue
+        print(f"ok {book['subject']} {book['pages']} {book['title']}", flush=True)
+        existing.append({k: v for k, v in book.items() if k != "_path"})
+    write_catalog(existing)
+    if errors:
+        print(f"ERRORS {len(errors)}", flush=True)
+        return 1
+    print(f"books {len(existing)}", flush=True)
+    print("DONE", flush=True)
+    return 0
+
+
 def main() -> int:
+    if "--add-missing" in sys.argv:
+        return add_missing()
     meta_only = "--meta-only" in sys.argv
     books = collect()
     counts: dict[str, int] = {}
