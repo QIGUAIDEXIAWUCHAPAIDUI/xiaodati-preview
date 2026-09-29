@@ -8,8 +8,6 @@
       counts[book.subject] = (counts[book.subject] || 0) + 1;
     });
     return Object.keys(counts).sort(function (a, b) {
-      if (a === "综合") return -1;
-      if (b === "综合") return 1;
       if (counts[b] !== counts[a]) return counts[b] - counts[a];
       return a.localeCompare(b, "zh");
     });
