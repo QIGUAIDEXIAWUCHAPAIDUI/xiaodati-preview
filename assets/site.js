@@ -122,7 +122,7 @@
       const cls = extra ? "nav " + extra : "nav";
       return '<button class="' + cls + '" type="button" data-goto="' + key + '" aria-current="' + on + '">' + label + "</button>";
     }
-    return '<nav class="navs">' + item("notice", "购买说明", "nav-buy") + item("request", "笔记缺失需求反馈") + "</nav>";
+    return '<nav class="navs"><span class="read-cue">务必阅读<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + item("notice", "购买说明", "nav-buy") + item("request", "笔记缺失需求反馈") + "</nav>";
   }
 
   function realWechat(value) {
