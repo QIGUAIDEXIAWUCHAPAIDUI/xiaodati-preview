@@ -10,19 +10,29 @@
 </head>
 <body>
   <div id="app"></div>
-  <p class="visit-count">历史访问量 <span id="visit-shown">167</span></p>
+  <p class="visit-count">历史访问量 <span id="visit-shown">170</span></p>
   <script>
     (function () {
       var shown = document.getElementById("visit-shown");
-      var name = "BusuanziCb_" + Math.floor(Math.random() * 1e12);
-      window[name] = function (data) {
-        var n = data && parseInt(data.site_pv, 10);
-        if (isFinite(n)) shown.textContent = String(n);
-      };
-      var s = document.createElement("script");
-      s.referrerPolicy = "no-referrer-when-downgrade";
-      s.src = "https://busuanzi.ibruce.info/busuanzi?jsonpCallback=" + name;
-      document.head.appendChild(s);
+      var base = 170;
+      var anchor = 6;
+      fetch("https://events.vercount.one/api/v2/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: "https://qiguaidexiawuchapaidui.github.io/xiaodati-preview/",
+          isNewUv: false
+        })
+      }).then(function (res) {
+        if (!res.ok) throw new Error("bad");
+        return res.json();
+      }).then(function (data) {
+        var n = data && data.data && parseInt(data.data.site_pv, 10);
+        if (!isFinite(n)) return;
+        var value = base + (n - anchor);
+        if (value < base) value = base;
+        shown.textContent = String(value);
+      }).catch(function () {});
     })();
   </script>
   <script src="catalog.js"></script>
