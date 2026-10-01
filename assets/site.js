@@ -117,11 +117,12 @@
 
   function navHtml() {
     const id = currentId();
-    function item(key, label) {
+    function item(key, label, extra) {
       const on = id === key ? "page" : "false";
-      return '<button class="nav" type="button" data-goto="' + key + '" aria-current="' + on + '">' + label + "</button>";
+      const cls = extra ? "nav " + extra : "nav";
+      return '<button class="' + cls + '" type="button" data-goto="' + key + '" aria-current="' + on + '">' + label + "</button>";
     }
-    return '<nav class="navs">' + item("notice", "购买说明") + item("request", "笔记缺失需求反馈") + "</nav>";
+    return '<nav class="navs">' + item("notice", "购买说明", "nav-buy") + item("request", "笔记缺失需求反馈") + "</nav>";
   }
 
   function realWechat(value) {
