@@ -10,24 +10,8 @@
 </head>
 <body>
   <div id="app"></div>
-  <p class="visit-count"><span id="busuanzi_container_site_pv">历史访问量 <span id="visit-shown">1124</span><span id="busuanzi_value_site_pv" class="visit-raw"></span></span></p>
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <script>
-    (function () {
-      var BASE = 1124;
-      var ANCHOR = 24;
-      var raw = document.getElementById("busuanzi_value_site_pv");
-      var shown = document.getElementById("visit-shown");
-      function paint() {
-        var n = parseInt(raw.textContent, 10);
-        if (!isFinite(n)) return;
-        var value = BASE + (n - ANCHOR);
-        if (value < BASE) value = BASE;
-        shown.textContent = String(value);
-      }
-      new MutationObserver(paint).observe(raw, { childList: true, characterData: true, subtree: true });
-    })();
-  </script>
+  <p class="visit-count"><span id="busuanzi_container_site_pv" style="display:none">历史访问量 <span id="busuanzi_value_site_pv"></span></span></p>
+  <script defer src="https://cn.vercount.one/js"></script>
   <script src="catalog.js"></script>
   <script src="assets/site.js"></script>
 </body>
