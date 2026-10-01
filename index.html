@@ -10,8 +10,21 @@
 </head>
 <body>
   <div id="app"></div>
-  <p class="visit-count"><span id="busuanzi_container_site_pv" style="display:none">历史访问量 <span id="busuanzi_value_site_pv"></span></span></p>
-  <script defer src="https://cn.vercount.one/js"></script>
+  <p class="visit-count">历史访问量 <span id="visit-shown">167</span></p>
+  <script>
+    (function () {
+      var shown = document.getElementById("visit-shown");
+      var name = "BusuanziCb_" + Math.floor(Math.random() * 1e12);
+      window[name] = function (data) {
+        var n = data && parseInt(data.site_pv, 10);
+        if (isFinite(n)) shown.textContent = String(n);
+      };
+      var s = document.createElement("script");
+      s.referrerPolicy = "no-referrer-when-downgrade";
+      s.src = "https://busuanzi.ibruce.info/busuanzi?jsonpCallback=" + name;
+      document.head.appendChild(s);
+    })();
+  </script>
   <script src="catalog.js"></script>
   <script src="assets/site.js"></script>
 </body>
