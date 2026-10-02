@@ -134,12 +134,18 @@
 
   function paperNote() {
     const names = sortedPaperGroups().map(function (group) { return group.subject; });
-    if (!names.length) return "目前含有公共管理学、社会学";
-    return "目前含有" + names.join("、");
+    if (!names.length) return "含公共管理学、社会学";
+    return "含" + names.join("、");
   }
 
   function arrowSvg() {
-    return '<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    return '<svg viewBox="0 0 36 16" aria-hidden="true"><defs><linearGradient id="arrowMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/><stop offset="0.42" stop-color="#9aa1aa"/><stop offset="1" stop-color="#2e353c"/></linearGradient></defs><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="url(#arrowMetal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function headerBrand(showBack) {
+    const sub = showBack ? "" : "<p>笔记展示开头·正中·最后部分页码</p>";
+    const back = showBack ? '<button class="home-back" type="button" data-home="1">← 返回目录</button>' : "";
+    return '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1>' + sub + "</span></button>" + back;
   }
 
   function navHtml() {
@@ -191,7 +197,7 @@
       }).join("");
       app.innerHTML =
         '<header class="top"><div class="wrap top-row">' +
-          '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>笔记展示开头·正中·最后部分页码</p></span></button>' +
+          headerBrand(false) +
           navHtml() +
           '<input class="search" type="text" lang="zh-CN" placeholder="搜书名、作者" value="' + esc(state.q) + '" aria-label="搜索" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
         "</div><div class=\"wrap filters\">" + chips + "</div></header>" +
@@ -205,11 +211,11 @@
   function renderNotice() {
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
+        headerBrand(true) +
         navHtml() +
       "</div></header>" +
       '<article class="notice">' +
-        '<button class="back" type="button" data-home="1">← 全部教材</button>' +
+        '<button class="back" type="button" data-home="1">← 返回目录</button>' +
         "<h2>购买说明</h2>" +
         '<p class="kicker">不创作低质、烂大街的笔记，也不接受低廉的知识创作报酬。</p>' +
         "<p>同学你好：首先，非常感谢你的咨询；其次，请再阅览了解如下信息。</p>" +
@@ -355,10 +361,10 @@
     }).join("");
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
+        headerBrand(true) +
         navHtml() +
       "</div></header>" +
-      '<article class="book"><button class="back" type="button" data-home="1">← 全部教材</button>' +
+      '<article class="book"><button class="back" type="button" data-home="1">← 返回目录</button>' +
         "<h2>" + esc(book.title) + "</h2>" +
         '<p class="lead">' + badge(book.kind) + esc(book.subject) + " · 全书 " + book.pages + " 页 · 样张 " + stripOf(book).length + " 页</p>" +
         sheets +
@@ -419,15 +425,15 @@
     }).join("");
     app.innerHTML =
       '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
+        headerBrand(true) +
         navHtml() +
       "</div></header>" +
       '<article class="papers">' +
-        '<button class="back" type="button" data-home="1">← 全部教材</button>' +
+        '<button class="back" type="button" data-home="1">← 返回目录</button>' +
         "<h2>27预测卷</h2>" +
         '<p class="papers-lead">' + esc(paperNote()) + "</p>" +
         '<div class="paper-read"><span class="paper-read-cue">购买预测卷请阅读' + arrowSvg() + "</span>" +
-          '<button class="paper-file" type="button" data-paper-file="1"><span class="file-ico" aria-hidden="true"></span><span class="file-name">预测卷样卷与购买说明</span></button></div>' +
+          '<button class="paper-file" type="button" data-paper-file="1"><span class="file-ico" aria-hidden="true"></span><span class="file-copy"><span class="file-name">预测卷样卷与购买说明</span><span class="file-meta">点开预览</span></span></button></div>' +
         body +
       "</article>";
     window.scrollTo(0, 0);
