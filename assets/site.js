@@ -115,6 +115,27 @@
     return '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body;
   }
 
+  function sortedPaperGroups() {
+    const source = (window.PAPERS && window.PAPERS.groups) || [];
+    const groups = source.map(function (group) {
+      const items = (group.items || []).slice().sort(function (a, b) {
+        return a.title.localeCompare(b.title, "zh", { numeric: true, sensitivity: "base" });
+      });
+      return { subject: group.subject, items: items };
+    });
+    groups.sort(function (a, b) {
+      if (b.items.length !== a.items.length) return b.items.length - a.items.length;
+      return a.subject.localeCompare(b.subject, "zh");
+    });
+    return groups;
+  }
+
+  function paperNote() {
+    const names = sortedPaperGroups().map(function (group) { return group.subject; });
+    if (!names.length) return "目前含有公共管理学、社会学";
+    return "目前含有" + names.join("、");
+  }
+
   function navHtml() {
     const id = currentId();
     function item(key, label, extra) {
@@ -122,7 +143,7 @@
       const cls = extra ? "nav " + extra : "nav";
       return '<button class="' + cls + '" type="button" data-goto="' + key + '" aria-current="' + on + '">' + label + "</button>";
     }
-    return '<nav class="navs"><span class="read-cue">务必阅读<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + item("notice", "购买说明", "nav-buy") + item("request", "笔记缺失需求反馈") + "</nav>";
+    return '<nav class="navs"><span class="read-cue">务必阅读<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + item("notice", "购买说明", "nav-buy") + item("papers", "27预测卷") + '<span class="papers-note">' + esc(paperNote()) + "</span></nav>";
   }
 
   function realWechat(value) {
@@ -430,6 +451,35 @@
     document.body.style.overflow = "";
   }
 
+  function renderPapers() {
+    const groups = sortedPaperGroups();
+    const pages = [1, 2, 3].map(function (page) {
+      const src = "papers/p" + String(page).padStart(3, "0") + ".jpg";
+      return '<figure class="sheet"><img src="' + src + '" alt="预测卷样卷与购买说明第 ' + page + ' 页"></figure>';
+    }).join("");
+    const body = groups.map(function (group) {
+      const rows = group.items.map(function (item) {
+        return '<li class="paper-row"><p class="paper-title">' + esc(item.title) + "</p>" +
+          '<table class="qty"><thead><tr><th>供量/余量</th></tr></thead><tbody><tr><td>' + esc(item.qty) + "</td></tr></tbody></table></li>";
+      }).join("");
+      return '<section class="paper-group"><h3>' + esc(group.subject) + " <em>" + group.items.length + '</em></h3><ul class="paper-list">' + rows + "</ul></section>";
+    }).join("");
+    app.innerHTML =
+      '<header class="top"><div class="wrap top-row">' +
+        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
+        navHtml() +
+      "</div></header>" +
+      '<article class="papers">' +
+        '<button class="back" type="button" data-home="1">← 全部教材</button>' +
+        "<h2>27预测卷</h2>" +
+        '<p class="papers-lead">' + esc(paperNote()) + "</p>" +
+        "<h3>预测卷样卷与购买说明</h3>" +
+        pages +
+        body +
+      "</article>";
+    window.scrollTo(0, 0);
+  }
+
   function render() {
     closeLight();
     const id = currentId();
@@ -437,8 +487,8 @@
       renderNotice();
       return;
     }
-    if (id === "request") {
-      renderRequest();
+    if (id === "papers" || id === "request") {
+      renderPapers();
       return;
     }
     const book = id ? findBook(id) : null;
