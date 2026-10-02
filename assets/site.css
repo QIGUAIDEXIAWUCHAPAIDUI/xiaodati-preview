@@ -124,10 +124,11 @@ a { color: inherit; }
 }
 
 .read-cue svg,
-.paper-read-cue svg {
+.paper-read-cue svg,
+.point-arrow {
   display: block;
-  width: 22px;
-  height: 19px;
+  width: 36px;
+  height: 16px;
   flex: none;
 }
 
