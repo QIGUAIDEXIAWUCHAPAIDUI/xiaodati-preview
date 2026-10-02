@@ -139,7 +139,7 @@
   }
 
   function arrowSvg() {
-    return '<svg viewBox="0 0 36 16" aria-hidden="true"><defs><linearGradient id="arrowMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f8fa"/><stop offset="0.42" stop-color="#9aa1aa"/><stop offset="1" stop-color="#2e353c"/></linearGradient></defs><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="url(#arrowMetal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    return '<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
 
   function headerBrand(showBack) {
