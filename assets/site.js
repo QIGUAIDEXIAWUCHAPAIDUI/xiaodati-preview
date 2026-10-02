@@ -426,8 +426,18 @@
     document.body.style.overflow = "hidden";
   }
 
+  function fileIcon(kind) {
+    var marks = kind === "guide"
+      ? '<path d="M9 16.5h12" stroke-width="2.1"/><path d="M9 22h12M9 26.5h8"/>'
+      : '<path d="M9 17h12M9 22h12M9 27h8"/>';
+    return '<svg class="file-ico" viewBox="0 0 32 40" aria-hidden="true">' +
+      '<path d="M6.8 2.2h12.2L25.8 9.1V34.4a3.4 3.4 0 0 1-3.4 3.4H6.8a3.4 3.4 0 0 1-3.4-3.4V5.6a3.4 3.4 0 0 1 3.4-3.4z" fill="#f5f5f7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<path d="M18.7 2.5v6.6h6.7" fill="#e5e5ea" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">' + marks + "</g></svg>";
+  }
+
   function fileButton(kind, name) {
-    return '<button class="paper-file" type="button" data-paper-file="' + kind + '"><span class="file-ico" aria-hidden="true"></span><span class="file-copy"><span class="file-name">' + name + '</span><span class="file-meta">点开预览</span></span></button>';
+    return '<button class="paper-file" type="button" data-paper-file="' + kind + '">' + fileIcon(kind) + '<span class="file-copy"><span class="file-name">' + name + '</span><span class="file-meta">点开预览</span></span></button>';
   }
 
   function renderPapers() {

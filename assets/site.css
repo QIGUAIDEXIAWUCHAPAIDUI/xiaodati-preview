@@ -695,13 +695,11 @@ a { color: inherit; }
 }
 
 .file-ico {
-  width: 36px;
-  height: 46px;
+  width: 34px;
+  height: 42px;
   flex: none;
-  border: 1px solid var(--gray3);
-  border-radius: 6px 12px 6px 6px;
-  background:
-    linear-gradient(135deg, #fff 0 58%, var(--gray4) 58% 74%, var(--gray6) 74% 100%);
+  display: block;
+  color: var(--ink);
 }
 
 .file-copy {
