@@ -139,16 +139,8 @@
     return "含" + names.join("、");
   }
 
-  let arrowSeq = 0;
-
   function arrowSvg() {
-    arrowSeq += 1;
-    const id = "arrowSilver" + arrowSeq;
-    return '<svg class="point-arrow" viewBox="0 0 46 20" aria-hidden="true">' +
-      '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#d8d8de"/><stop offset="1" stop-color="#a8a8ae"/>' +
-      '</linearGradient></defs>' +
-      '<path fill="url(#' + id + ')" d="M1 7.2h25V2.4L45 10 26 17.6V12.8H1Z"/></svg>';
+    return '<svg class="point-arrow" viewBox="0 0 52 26" aria-hidden="true"><path d="M1.4 7.6H26.4V2.2L50.6 13 26.4 23.8V18.4H1.4Z"/></svg>';
   }
 
   function headerBrand(showBack) {
