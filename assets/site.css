@@ -126,8 +126,9 @@ a { color: inherit; }
 .read-cue svg,
 .paper-read-cue svg {
   display: block;
-  width: 34px;
-  height: 16px;
+  width: 22px;
+  height: 19px;
+  flex: none;
 }
 
 .home-back,
