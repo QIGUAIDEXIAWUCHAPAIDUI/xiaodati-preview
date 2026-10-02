@@ -22,6 +22,7 @@
     scroll: 0,
     light: -1,
     paperLight: -1,
+    paperKind: "",
   };
 
   function esc(value) {
@@ -159,7 +160,7 @@
     const papersBtn = PAPERS_OPEN
       ? '<button class="nav nav-papers" type="button" data-goto="papers" aria-current="' + papersOn + '">27预测卷</button>'
       : '<button class="nav nav-papers" type="button" disabled aria-disabled="true">27预测卷</button>';
-    return '<nav class="navs"><span class="read-cue">务必阅读' + arrowSvg() + "</span>" + item("notice", "购买说明", "nav-buy") +
+    return '<nav class="navs"><span class="read-cue">务必阅读' + arrowSvg() + "</span>" + item("notice", "笔记购买说明", "nav-buy") +
       '<span class="papers-pair"><span class="read-cue papers-cue">' + arrowSvg() + '</span><span class="papers-slot">' +
       papersBtn + '<span class="papers-note">' + esc(paperNote()) + "</span></span></span></nav>";
   }
@@ -215,7 +216,7 @@
         navHtml() +
       "</div></header>" +
       '<article class="notice">' +
-        "<h2>购买说明</h2>" +
+        "<h2>笔记购买说明</h2>" +
         '<p class="kicker">不创作低质、烂大街的笔记，也不接受低廉的知识创作报酬。</p>' +
         "<p>同学你好：首先，非常感谢你的咨询；其次，请再阅览了解如下信息。</p>" +
         '<figure class="poster"><img src="assets/buy-guide.jpg?v=2" alt="购买方式见此图" width="1290" height="1122"></figure>' +
@@ -394,23 +395,39 @@
   function closeLight() {
     state.light = -1;
     state.paperLight = -1;
+    state.paperKind = "";
     removeLight();
   }
 
+  function paperFileOf(kind) {
+    if (kind === "guide") {
+      return { title: "试卷购买说明", pages: ["papers/p002.jpg", "papers/p003.jpg"] };
+    }
+    return { title: "样卷", pages: ["papers/p001.jpg"] };
+  }
+
   function renderPaperLight() {
-    const total = 3;
+    const file = paperFileOf(state.paperKind);
+    const total = file.pages.length;
     if (state.paperLight < 0 || state.paperLight >= total) return;
     const page = state.paperLight + 1;
-    const src = "papers/p" + String(page).padStart(3, "0") + ".jpg";
+    const src = file.pages[state.paperLight];
+    const pager = total > 1
+      ? "<button type=\"button\" data-step=\"-1\">上一页</button><span>第 " + page + " 页 · " + page + " / " + total + "</span><button type=\"button\" data-step=\"1\">下一页</button>"
+      : "<span>第 1 页</span>";
     removeLight();
     const node = document.createElement("div");
     node.className = "light";
     node.innerHTML =
-      "<header><span>预测卷样卷与购买说明</span><button type=\"button\" data-close=\"1\">关闭</button></header>" +
-      '<div class="stage"><img src="' + src + '" alt="预测卷样卷与购买说明第 ' + page + ' 页"></div>' +
-      "<footer><button type=\"button\" data-step=\"-1\">上一页</button><span>第 " + page + " 页 · " + (state.paperLight + 1) + " / " + total + "</span><button type=\"button\" data-step=\"1\">下一页</button></footer>";
+      "<header><span>" + esc(file.title) + "</span><button type=\"button\" data-close=\"1\">关闭</button></header>" +
+      '<div class="stage"><img src="' + src + '" alt="' + esc(file.title) + "第 " + page + ' 页"></div>' +
+      "<footer>" + pager + "</footer>";
     document.body.appendChild(node);
     document.body.style.overflow = "hidden";
+  }
+
+  function fileButton(kind, name) {
+    return '<button class="paper-file" type="button" data-paper-file="' + kind + '"><span class="file-ico" aria-hidden="true"></span><span class="file-copy"><span class="file-name">' + name + '</span><span class="file-meta">点开预览</span></span></button>';
   }
 
   function renderPapers() {
@@ -430,8 +447,9 @@
       '<article class="papers">' +
         "<h2>27预测卷</h2>" +
         '<p class="papers-lead">' + esc(paperNote()) + "</p>" +
-        '<div class="paper-read"><span class="paper-read-cue">购买预测卷请阅读' + arrowSvg() + "</span>" +
-          '<button class="paper-file" type="button" data-paper-file="1"><span class="file-ico" aria-hidden="true"></span><span class="file-copy"><span class="file-name">预测卷样卷与购买说明</span><span class="file-meta">点开预览</span></span></button></div>' +
+        '<div class="paper-read">' + fileButton("sample", "样卷") +
+          '<span class="paper-guide"><span class="paper-read-cue">购买预测卷请阅读' + arrowSvg() + "</span>" +
+          fileButton("guide", "试卷购买说明") + "</span></div>" +
         body +
       "</article>";
     window.scrollTo(0, 0);
@@ -491,6 +509,7 @@
     const paperFile = event.target.closest("[data-paper-file]");
     if (paperFile) {
       if (!PAPERS_OPEN) return;
+      state.paperKind = paperFile.getAttribute("data-paper-file") || "sample";
       state.paperLight = 0;
       renderPaperLight();
       return;
@@ -514,7 +533,8 @@
     }
     if (!step) return;
     if (state.paperLight >= 0) {
-      state.paperLight = (state.paperLight + Number(step.getAttribute("data-step")) + 3) % 3;
+      const total = paperFileOf(state.paperKind).pages.length;
+      state.paperLight = (state.paperLight + Number(step.getAttribute("data-step")) + total) % total;
       renderPaperLight();
       return;
     }
@@ -530,8 +550,9 @@
     if (event.key === "Escape") closeLight();
     if (!document.querySelector(".light")) return;
     if (state.paperLight >= 0 && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+      const total = paperFileOf(state.paperKind).pages.length;
       const delta = event.key === "ArrowLeft" ? -1 : 1;
-      state.paperLight = (state.paperLight + delta + 3) % 3;
+      state.paperLight = (state.paperLight + delta + total) % total;
       renderPaperLight();
       return;
     }

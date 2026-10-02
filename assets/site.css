@@ -654,9 +654,16 @@ a { color: inherit; }
 .paper-read {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 18px;
   flex-wrap: wrap;
   margin: 0 0 8px;
+}
+
+.paper-guide {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .paper-read-cue {
