@@ -448,7 +448,7 @@
           '<table class="qty"><thead><tr><th>供量/余量</th></tr></thead><tbody><tr><td>' + esc(item.qty) + "</td></tr></tbody></table></li>";
       }).join("");
       const order = group.subject === "公共管理学"
-        ? '<p class="paper-order">' + esc("请在小红书（奇怪的下午茶派对-主页“服务”）下单→选择“27考研预测卷一套”→微信（oddpd925）联系发送。") + "</p>"
+        ? '<p class="paper-order">' + esc("请在小红书(奇怪的下午茶派对-主页“服务”)下单→选择“27考研预测卷一套”→直接支付→微信(oddpd925)联系发送→小红书确认收货。") + "</p>"
         : "";
       return '<section class="paper-group">' + order + "<h3>" + esc(group.subject) + " <em>" + group.items.length + "</em></h3><ul class=\"paper-list\">" + rows + "</ul></section>";
     }).join("");
