@@ -146,60 +146,6 @@
     return '<nav class="navs"><span class="read-cue">务必阅读<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + item("notice", "购买说明", "nav-buy") + item("papers", "27预测卷") + '<span class="papers-note">' + esc(paperNote()) + "</span></nav>";
   }
 
-  function realWechat(value) {
-    const text = value.replace(/[\s-]/g, "");
-    if (!text || text === "本人正在使用的微信号") return false;
-    if (/^(\+?86)?1\d{10}$/.test(text)) return true;
-    if (/^wxid_[a-zA-Z0-9_]{5,}$/.test(text)) return true;
-    if (/^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/.test(text)) return true;
-    return false;
-  }
-
-  function bindRequest(form) {
-    const note = form.querySelector(".request-note");
-    const button = form.querySelector("button[type=submit]");
-    function refreshSubmit() {
-      const ok = realWechat(form.wechat.value.trim());
-      button.disabled = !ok;
-    }
-    form.wechat.addEventListener("input", refreshSubmit);
-    refreshSubmit();
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const book = form.book.value.trim();
-      const wechat = form.wechat.value.trim();
-      if (!realWechat(wechat)) {
-        note.textContent = "请填写真实微信号，未填写无法提交。";
-        form.wechat.focus();
-        refreshSubmit();
-        return;
-      }
-      if (!book) {
-        note.textContent = "请写清作者、书名和版次。";
-        form.book.focus();
-        return;
-      }
-      note.textContent = "正在收录…";
-      fetch("collector.txt?t=" + Date.now())
-        .then(function (res) { return res.text(); })
-        .then(function (url) {
-          return fetch(url.trim(), {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ book: book, wechat: wechat })
-          });
-        })
-        .then(function (res) {
-          if (!res.ok) throw new Error("bad");
-          note.textContent = "已收录。请保持这个微信可被搜索，方便回复这本笔记是否整理。";
-          form.reset();
-        })
-        .catch(function () {
-          note.textContent = "这次没有送进收录表，请稍后再试。";
-        });
-    });
-  }
-
   function bindSearch(input) {
     let composing = false;
     input.addEventListener("compositionstart", function () { composing = true; });
@@ -371,28 +317,6 @@
           "<p>愿你：合上教材以后依然能够说清知识；面对变化的题目依然能够找到逻辑；走进考场之际，曾经读过、理解过、背诵过和默写过的每一页，都能在那时被铿锵落笔。</p>" +
         "</section>" +
       "</article>";
-    window.scrollTo(0, 0);
-  }
-
-  function renderRequest() {
-    app.innerHTML =
-      '<header class="top"><div class="wrap top-row">' +
-        '<button class="brand" type="button" data-home="1"><span><h1>小大题系列笔记预览站</h1><p>返回目录</p></span></button>' +
-        navHtml() +
-      "</div></header>" +
-      '<article class="notice">' +
-        '<button class="back" type="button" data-home="1">← 全部教材</button>' +
-        '<form class="request" novalidate>' +
-          "<h2>笔记缺失需求反馈</h2>" +
-          "<p>目录里没有的教材，可以留在这里。请写作者、书名和版次，例如：于圣《文学疗愈》第七版。</p>" +
-          '<label>作者、书名和版次<input name="book" type="text" placeholder="于圣《文学疗愈》第七版" autocomplete="off"></label>' +
-          '<label>真实微信联系方式（必填）<input name="wechat" type="text" required placeholder="本人正在使用的微信号" autocomplete="off"></label>' +
-          '<p class="request-limit">目前只整理这些学科的笔记：管理学、社会学、教育学、政治学、经济学（文）、统计学（文）。超出这个范围的，先不收录。</p>' +
-          '<p class="request-actions"><button type="submit">提交反馈</button><span class="request-hours">收录开放时间：9:00–23:00</span></p>' +
-          '<p class="request-note" role="status"></p>' +
-        "</form>" +
-      "</article>";
-    bindRequest(app.querySelector(".request"));
     window.scrollTo(0, 0);
   }
 

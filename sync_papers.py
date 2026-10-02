@@ -1,23 +1,19 @@
 #!/usr/bin/env python3
-"""从桌面《网页预测卷板块.xlsx》生成 papers.js，并放入样卷 PDF 的三页图。"""
+"""从本文件夹《网页预测卷板块.xlsx》生成 papers.js，并重画 papers/sample.pdf 的页图。"""
 
 from __future__ import annotations
 
 import json
 import re
-import shutil
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-DESKTOP = Path("/Users/gravitymeow/Desktop")
-XLSX_SRC = DESKTOP / "网页预测卷板块.xlsx"
-PDF_SRC = DESKTOP / "预测卷网页呈现.pdf"
-XLSX_COPY = ROOT / "网页预测卷板块.xlsx"
+XLSX = ROOT / "网页预测卷板块.xlsx"
 PAPER_DIR = ROOT / "papers"
-PDF_COPY = PAPER_DIR / "sample.pdf"
+PDF = PAPER_DIR / "sample.pdf"
 OUT_JS = ROOT / "papers.js"
-sys.path.insert(0, str(DESKTOP / "小大题反馈收录" / "pydeps"))
+sys.path.insert(0, str(ROOT / "pydeps"))
 import openpyxl
 import pymupdf
 
@@ -58,7 +54,6 @@ def read_groups(path: Path) -> list[dict]:
 
 def render_pdf(src: Path) -> None:
     PAPER_DIR.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src, PDF_COPY)
     doc = pymupdf.open(src)
     try:
         for index in range(doc.page_count):
@@ -70,13 +65,12 @@ def render_pdf(src: Path) -> None:
 
 
 def main() -> None:
-    if not XLSX_SRC.exists():
-        raise SystemExit(f"缺少表格 {XLSX_SRC}")
-    if not PDF_SRC.exists():
-        raise SystemExit(f"缺少样卷 {PDF_SRC}")
-    shutil.copy2(XLSX_SRC, XLSX_COPY)
-    groups = read_groups(XLSX_SRC)
-    render_pdf(PDF_SRC)
+    if not XLSX.exists():
+        raise SystemExit(f"缺少表格 {XLSX}")
+    if not PDF.exists():
+        raise SystemExit(f"缺少样卷 {PDF}")
+    groups = read_groups(XLSX)
+    render_pdf(PDF)
     payload = {"groups": groups}
     OUT_JS.write_text(
         "window.PAPERS = " + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n",
