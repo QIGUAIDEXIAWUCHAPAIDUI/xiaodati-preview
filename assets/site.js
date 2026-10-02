@@ -1,4 +1,5 @@
 (function () {
+  const PAPERS_OPEN = window.PAPERS_OPEN !== false;
   const books = window.BOOKS || [];
   const app = document.getElementById("app");
 
@@ -20,6 +21,7 @@
     subject: "全部",
     scroll: 0,
     light: -1,
+    paperLight: -1,
   };
 
   function esc(value) {
@@ -136,6 +138,10 @@
     return "目前含有" + names.join("、");
   }
 
+  function arrowSvg() {
+    return '<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
   function navHtml() {
     const id = currentId();
     function item(key, label, extra) {
@@ -143,7 +149,13 @@
       const cls = extra ? "nav " + extra : "nav";
       return '<button class="' + cls + '" type="button" data-goto="' + key + '" aria-current="' + on + '">' + label + "</button>";
     }
-    return '<nav class="navs"><span class="read-cue">务必阅读<svg viewBox="0 0 36 16" aria-hidden="true"><path d="M1 8h28M22 2l8 6-8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + item("notice", "购买说明", "nav-buy") + item("papers", "27预测卷") + '<span class="papers-note">' + esc(paperNote()) + "</span></nav>";
+    const papersOn = id === "papers" || id === "request" ? "page" : "false";
+    const papersBtn = PAPERS_OPEN
+      ? '<button class="nav nav-papers" type="button" data-goto="papers" aria-current="' + papersOn + '">27预测卷</button>'
+      : '<button class="nav nav-papers" type="button" disabled aria-disabled="true">27预测卷</button>';
+    return '<nav class="navs"><span class="read-cue">务必阅读' + arrowSvg() + "</span>" + item("notice", "购买说明", "nav-buy") +
+      '<span class="papers-pair"><span class="read-cue papers-cue">' + arrowSvg() + '</span><span class="papers-slot">' +
+      papersBtn + '<span class="papers-note">' + esc(paperNote()) + "</span></span></span></nav>";
   }
 
   function bindSearch(input) {
@@ -368,19 +380,36 @@
     document.body.style.overflow = "hidden";
   }
 
-  function closeLight() {
-    state.light = -1;
+  function removeLight() {
     const node = document.querySelector(".light");
     if (node) node.remove();
     document.body.style.overflow = "";
   }
 
+  function closeLight() {
+    state.light = -1;
+    state.paperLight = -1;
+    removeLight();
+  }
+
+  function renderPaperLight() {
+    const total = 3;
+    if (state.paperLight < 0 || state.paperLight >= total) return;
+    const page = state.paperLight + 1;
+    const src = "papers/p" + String(page).padStart(3, "0") + ".jpg";
+    removeLight();
+    const node = document.createElement("div");
+    node.className = "light";
+    node.innerHTML =
+      "<header><span>预测卷样卷与购买说明</span><button type=\"button\" data-close=\"1\">关闭</button></header>" +
+      '<div class="stage"><img src="' + src + '" alt="预测卷样卷与购买说明第 ' + page + ' 页"></div>' +
+      "<footer><button type=\"button\" data-step=\"-1\">上一页</button><span>第 " + page + " 页 · " + (state.paperLight + 1) + " / " + total + "</span><button type=\"button\" data-step=\"1\">下一页</button></footer>";
+    document.body.appendChild(node);
+    document.body.style.overflow = "hidden";
+  }
+
   function renderPapers() {
     const groups = sortedPaperGroups();
-    const pages = [1, 2, 3].map(function (page) {
-      const src = "papers/p" + String(page).padStart(3, "0") + ".jpg";
-      return '<figure class="sheet"><img src="' + src + '" alt="预测卷样卷与购买说明第 ' + page + ' 页"></figure>';
-    }).join("");
     const body = groups.map(function (group) {
       const rows = group.items.map(function (item) {
         return '<li class="paper-row"><p class="paper-title">' + esc(item.title) + "</p>" +
@@ -397,8 +426,8 @@
         '<button class="back" type="button" data-home="1">← 全部教材</button>' +
         "<h2>27预测卷</h2>" +
         '<p class="papers-lead">' + esc(paperNote()) + "</p>" +
-        "<h3>预测卷样卷与购买说明</h3>" +
-        pages +
+        '<div class="paper-read"><span class="paper-read-cue">购买预测卷请阅读' + arrowSvg() + "</span>" +
+          '<button class="paper-file" type="button" data-paper-file="1"><span class="file-ico" aria-hidden="true"></span><span class="file-name">预测卷样卷与购买说明</span></button></div>' +
         body +
       "</article>";
     window.scrollTo(0, 0);
@@ -412,6 +441,11 @@
       return;
     }
     if (id === "papers" || id === "request") {
+      if (!PAPERS_OPEN) {
+        if (location.hash) location.hash = "";
+        else renderIndex();
+        return;
+      }
       renderPapers();
       return;
     }
@@ -430,7 +464,9 @@
     }
     const goto = event.target.closest("[data-goto]");
     if (goto) {
-      const next = "#/" + goto.getAttribute("data-goto");
+      const key = goto.getAttribute("data-goto");
+      if (key === "papers" && !PAPERS_OPEN) return;
+      const next = "#/" + key;
       if (location.hash !== next) location.hash = next;
       else render();
       return;
@@ -446,6 +482,13 @@
     if (card) {
       state.scroll = window.scrollY;
       location.hash = "#/" + card.getAttribute("data-id");
+      return;
+    }
+    const paperFile = event.target.closest("[data-paper-file]");
+    if (paperFile) {
+      if (!PAPERS_OPEN) return;
+      state.paperLight = 0;
+      renderPaperLight();
       return;
     }
     const shot = event.target.closest("[data-page]");
@@ -466,6 +509,11 @@
       return;
     }
     if (!step) return;
+    if (state.paperLight >= 0) {
+      state.paperLight = (state.paperLight + Number(step.getAttribute("data-step")) + 3) % 3;
+      renderPaperLight();
+      return;
+    }
     const book = findBook(currentId());
     if (!book) return;
     const pages = stripOf(book);
@@ -477,6 +525,12 @@
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeLight();
     if (!document.querySelector(".light")) return;
+    if (state.paperLight >= 0 && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+      const delta = event.key === "ArrowLeft" ? -1 : 1;
+      state.paperLight = (state.paperLight + delta + 3) % 3;
+      renderPaperLight();
+      return;
+    }
     const book = findBook(currentId());
     if (!book) return;
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
