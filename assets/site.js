@@ -478,7 +478,7 @@
       else render();
       return;
     }
-    const chip = event.target.closest("[data-subject]");
+    const chip = event.target.closest(".chip");
     if (chip) {
       state.subject = chip.getAttribute("data-subject");
       state.scroll = 0;
