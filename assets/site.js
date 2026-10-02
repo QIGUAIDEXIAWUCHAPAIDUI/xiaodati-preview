@@ -215,7 +215,6 @@
         navHtml() +
       "</div></header>" +
       '<article class="notice">' +
-        '<button class="back" type="button" data-home="1">← 返回目录</button>' +
         "<h2>购买说明</h2>" +
         '<p class="kicker">不创作低质、烂大街的笔记，也不接受低廉的知识创作报酬。</p>' +
         "<p>同学你好：首先，非常感谢你的咨询；其次，请再阅览了解如下信息。</p>" +
@@ -364,7 +363,7 @@
         headerBrand(true) +
         navHtml() +
       "</div></header>" +
-      '<article class="book"><button class="back" type="button" data-home="1">← 返回目录</button>' +
+      '<article class="book">' +
         "<h2>" + esc(book.title) + "</h2>" +
         '<p class="lead">' + badge(book.kind) + esc(book.subject) + " · 全书 " + book.pages + " 页 · 样张 " + stripOf(book).length + " 页</p>" +
         sheets +
@@ -429,7 +428,6 @@
         navHtml() +
       "</div></header>" +
       '<article class="papers">' +
-        '<button class="back" type="button" data-home="1">← 返回目录</button>' +
         "<h2>27预测卷</h2>" +
         '<p class="papers-lead">' + esc(paperNote()) + "</p>" +
         '<div class="paper-read"><span class="paper-read-cue">购买预测卷请阅读' + arrowSvg() + "</span>" +
