@@ -761,6 +761,19 @@ a { color: inherit; }
   font-weight: 500;
 }
 
+.paper-order {
+  margin: 36px 0 8px;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.015em;
+}
+
+.paper-group:has(.paper-order) h3 {
+  margin-top: 0;
+}
+
 .papers h3 {
   margin: 36px 0 8px;
   font-size: 28px;
