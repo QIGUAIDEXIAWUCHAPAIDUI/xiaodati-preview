@@ -127,23 +127,11 @@ a { color: inherit; }
 .paper-read-cue svg,
 .point-arrow {
   display: block;
-  width: 50px;
-  height: 26px;
+  width: 26px;
+  height: 11px;
   flex: none;
-  overflow: visible;
-  filter:
-    drop-shadow(0 0 1px rgba(255, 255, 255, 1))
-    drop-shadow(0 0 4px rgba(255, 255, 255, 0.95))
-    drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-}
-
-.point-arrow path {
-  fill: #fbfbfd;
-  stroke: #ffffff;
-  stroke-width: 2.4;
-  stroke-linejoin: miter;
-  stroke-miterlimit: 2;
-  paint-order: fill stroke;
+  margin-left: 4px;
+  color: var(--ink);
 }
 
 .home-back,

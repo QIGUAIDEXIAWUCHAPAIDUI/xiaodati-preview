@@ -140,7 +140,7 @@
   }
 
   function arrowSvg() {
-    return '<svg class="point-arrow" viewBox="0 0 52 26" aria-hidden="true"><path d="M1.4 7.6H26.4V2.2L50.6 13 26.4 23.8V18.4H1.4Z"/></svg>';
+    return '<svg class="point-arrow" viewBox="0 0 27 11" aria-hidden="true"><path d="M1 5.5h20M16 1.4 24.6 5.5 16 9.6" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
 
   function headerBrand(showBack) {
