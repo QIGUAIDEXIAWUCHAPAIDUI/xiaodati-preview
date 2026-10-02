@@ -1,6 +1,23 @@
 (function () {
   const books = window.BOOKS || [];
   const app = document.getElementById("app");
+  const tones = {
+    "全部": "#241c16",
+    "公共管理(管理学)和公共政策": "#8d3b32",
+    "社会学与社会工作": "#1f6f78",
+    "经济学": "#a16207",
+    "研究方法": "#3b4d86",
+    "政治学": "#8a3044",
+    "土地管理": "#5f6f2e",
+    "综合": "#6b5344",
+    "教育学": "#6d4b96",
+    "心理学": "#a14d68",
+    "人类学": "#2f6a4a"
+  };
+
+  function toneOf(subject) {
+    return tones[subject] || "#9d2c2c";
+  }
 
   function subjectOrder() {
     const counts = {};
@@ -109,7 +126,7 @@
               "</button>"
             );
           }).join("");
-          return '<section class="group"><h2>' + esc(group.subject) + " <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
+          return '<section class="group" data-subject="' + esc(group.subject) + '" style="--tone:' + toneOf(group.subject) + '"><h2><span>' + esc(group.subject) + "</span> <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
         }).join("")
       : '<p class="empty">没有对上的教材。</p>';
     return '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body;
@@ -208,7 +225,7 @@
     if (fresh) {
       const chips = subjects.map(function (subject) {
         const pressed = subject === state.subject ? "true" : "false";
-        return '<button class="chip" type="button" data-subject="' + esc(subject) + '" aria-pressed="' + pressed + '">' + esc(subject) + "</button>";
+        return '<button class="chip" type="button" data-subject="' + esc(subject) + '" style="--tone:' + toneOf(subject) + '" aria-pressed="' + pressed + '">' + esc(subject) + "</button>";
       }).join("");
       app.innerHTML =
         '<header class="top"><div class="wrap top-row">' +
@@ -403,7 +420,7 @@
       "</div></header>" +
       '<article class="book"><button class="back" type="button" data-home="1">← 全部教材</button>' +
         "<h2>" + esc(book.title) + "</h2>" +
-        '<p class="lead">' + badge(book.kind) + esc(book.subject) + " · 全书 " + book.pages + " 页 · 样张 " + stripOf(book).length + " 页</p>" +
+        '<p class="lead">' + badge(book.kind) + '<span class="subj" style="--tone:' + toneOf(book.subject) + '">' + esc(book.subject) + "</span> · 全书 " + book.pages + " 页 · 样张 " + stripOf(book).length + " 页</p>" +
         sheets +
       "</article>";
     window.scrollTo(0, 0);

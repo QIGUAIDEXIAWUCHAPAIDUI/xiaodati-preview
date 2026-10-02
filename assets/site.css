@@ -16,7 +16,11 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   color: var(--ink);
-  background: var(--paper);
+  background:
+    radial-gradient(920px 460px at 0% -8%, rgba(157, 44, 44, 0.09), transparent 62%),
+    radial-gradient(760px 420px at 100% 0%, rgba(31, 111, 120, 0.1), transparent 58%),
+    radial-gradient(640px 380px at 70% 100%, rgba(161, 98, 7, 0.07), transparent 60%),
+    var(--paper);
   font-family: "Songti SC", "STSong", "Noto Serif SC", PMingLiU, serif;
   line-height: 1.55;
 }
@@ -26,7 +30,7 @@ body::before {
   position: fixed;
   inset: 0 0 auto 0;
   height: 4px;
-  background: var(--seal);
+  background: linear-gradient(90deg, #8d3b32, #1f6f78 42%, #a16207 72%, #3b4d86);
   z-index: 40;
 }
 
@@ -152,6 +156,18 @@ a { color: inherit; }
   text-align: left;
 }
 
+.brand::before {
+  content: "";
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: 1.5px solid var(--seal);
+  border-radius: 3px;
+  background:
+    linear-gradient(var(--seal), var(--seal)) 8px 16px / 18px 1.5px no-repeat,
+    linear-gradient(var(--seal), var(--seal)) 16px 8px / 1.5px 18px no-repeat;
+}
+
 .seal {
   width: 36px;
   height: 36px;
@@ -202,16 +218,21 @@ a { color: inherit; }
   display: block;
   width: 36px;
   height: 16px;
+  animation: cue-nudge 1.6s ease-in-out infinite;
 }
 
 .nav {
   border: 1px solid var(--ink);
-  background: transparent;
+  border-radius: 999px;
+  background: rgba(255, 250, 243, 0.72);
   padding: 6px 12px;
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
   font-size: 13px;
   cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
 }
+
+.nav:hover { transform: translateY(-1px); }
 
 .nav[aria-current="page"] {
   background: var(--ink);
@@ -238,13 +259,19 @@ a { color: inherit; }
 .search {
   margin-left: 14px;
   width: min(280px, 42vw);
-  border: 0;
-  border-bottom: 1px solid var(--ink);
-  background: transparent;
-  padding: 8px 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 250, 243, 0.86);
+  padding: 8px 14px;
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
   font-size: 14px;
   outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.search:focus {
+  border-color: var(--seal);
+  box-shadow: 0 0 0 3px rgba(157, 44, 44, 0.12);
 }
 
 .filters {
@@ -258,21 +285,39 @@ a { color: inherit; }
 .filters::-webkit-scrollbar { display: none; }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   flex: none;
   border: 1px solid var(--line);
-  background: transparent;
+  background: rgba(255, 250, 243, 0.78);
   border-radius: 999px;
-  padding: 4px 11px;
+  padding: 6px 12px 6px 10px;
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
   font-size: 13px;
   cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.chip[aria-pressed="true"] {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
+.chip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tone, var(--ink));
+  flex: none;
 }
+
+.chip:hover { transform: translateY(-1px); }
+
+.chip[aria-pressed="true"] {
+  background: var(--tone, var(--ink));
+  border-color: var(--tone, var(--ink));
+  color: var(--paper);
+  box-shadow: 0 8px 18px rgba(36, 28, 22, 0.12);
+}
+
+.chip[aria-pressed="true"]::before { background: #fffaf3; }
 
 .count-line {
   margin: 22px 0 6px;
@@ -281,23 +326,50 @@ a { color: inherit; }
   font-size: 13px;
 }
 
-.group { margin: 28px 0 8px; }
+.group {
+  margin: 34px 0 8px;
+  animation: rise 0.55s ease both;
+}
+
+.group:nth-of-type(2) { animation-delay: 0.05s; }
+.group:nth-of-type(3) { animation-delay: 0.1s; }
+.group:nth-of-type(4) { animation-delay: 0.15s; }
+.group:nth-of-type(5) { animation-delay: 0.2s; }
+.group:nth-of-type(n + 6) { animation-delay: 0.24s; }
 
 .group h2 {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
   margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
   font-size: 20px;
   font-weight: 600;
 }
 
+.group h2::before {
+  content: "";
+  width: 4px;
+  height: 1.05em;
+  border-radius: 3px;
+  background: var(--tone, var(--seal));
+  flex: none;
+}
+
 .group h2 em {
+  margin-left: auto;
+  min-width: 1.8em;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #fffaf3;
+  border: 1px solid var(--line);
   font-style: normal;
-  color: var(--muted);
+  color: var(--tone, var(--muted));
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 600;
+  text-align: center;
 }
 
 .grid {
@@ -314,7 +386,10 @@ a { color: inherit; }
   background: transparent;
   text-align: left;
   cursor: pointer;
+  transition: transform 0.22s ease;
 }
+
+.card:hover { transform: translateY(-5px); }
 
 .card img {
   width: 100%;
@@ -323,8 +398,16 @@ a { color: inherit; }
   object-position: top;
   background: white;
   border: 1px solid var(--line);
+  border-top: 3px solid var(--tone, var(--line));
   box-shadow: var(--shadow);
+  transition: box-shadow 0.28s ease;
 }
+
+.card:hover img {
+  box-shadow: 0 18px 34px rgba(36, 28, 22, 0.14);
+}
+
+.card:hover h3 { color: var(--tone, var(--ink)); }
 
 .card h3 {
   margin: 10px 0 4px;
@@ -386,6 +469,11 @@ a { color: inherit; }
   color: var(--muted);
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
   font-size: 14px;
+}
+
+.subj {
+  color: var(--tone, var(--seal));
+  font-weight: 700;
 }
 
 .section-head {
@@ -630,17 +718,43 @@ a { color: inherit; }
 
 .visit-count {
   position: fixed;
-  top: 26px;
+  top: 22px;
   right: max(20px, calc((100vw - 1120px) / 2));
   z-index: 30;
   margin: 0;
   width: auto;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 250, 243, 0.9);
   color: var(--muted);
   font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
   font-size: 12px;
   letter-spacing: 0.04em;
   line-height: 1.4;
   text-align: right;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes cue-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group,
+  .read-cue svg,
+  .card,
+  .card img,
+  .chip,
+  .nav {
+    animation: none;
+    transition: none;
+  }
 }
 
 .foot {
