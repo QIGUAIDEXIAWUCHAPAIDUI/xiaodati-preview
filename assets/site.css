@@ -421,12 +421,6 @@ a { color: inherit; }
   font-weight: 500;
 }
 
-.pick-hint {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-size: 15px;
-}
-
 .count-line {
   margin: 18px 0 4px;
   color: var(--muted);
@@ -816,10 +810,27 @@ a { color: inherit; }
 
 .paper-read {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 18px;
   flex-wrap: wrap;
   margin: 0 0 8px;
+}
+
+.paper-sample {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 22em;
+}
+
+.paper-sample-note {
+  margin: 0;
+  color: #3a3a3c;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.015em;
 }
 
 .paper-guide {
@@ -827,6 +838,7 @@ a { color: inherit; }
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  margin-top: 22px;
 }
 
 .paper-read-cue {
@@ -905,7 +917,10 @@ a { color: inherit; }
 }
 
 .paper-list {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -914,32 +929,45 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
+  gap: 16px;
+  padding: 0;
 }
 
 .paper-title {
   flex: 1;
   min-width: 0;
+  min-height: 68px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin: 0;
-  padding: 0;
+  padding: 14px 18px;
   border: 0;
-  background: transparent;
+  border-radius: 12px;
+  background: var(--pill-light);
   color: var(--ink);
   font-size: 16px;
   line-height: 1.45;
   text-align: left;
   cursor: pointer;
+  box-shadow: var(--glow-light);
+}
+
+.paper-title:hover {
+  background: var(--pill-light-press);
+  box-shadow: var(--glow-light-hover), 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.paper-title-name {
+  min-width: 0;
 }
 
 .paper-outline-cue {
+  flex: none;
   color: var(--muted);
   font-size: 14px;
+  font-weight: 500;
 }
 
 .outline-layer {
@@ -1108,5 +1136,5 @@ a { color: inherit; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
   .papers-slot { width: auto; }
   .paper-read { align-items: flex-start; }
-  .paper-row { align-items: flex-start; }
+  .paper-guide { margin-top: 0; }
 }

@@ -155,7 +155,7 @@
       const cards = group.books.map(function (book) { return cardHtml(book, false); }).join("");
       return '<section class="group"><h2>' + esc(group.subject) + " <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
     }).join("");
-    return '<div class="pick-layer" role="dialog" aria-modal="true" aria-label="已选笔记"><div class="pick-sheet"><div class="pick-sheet-head"><h2>已选笔记 <em>' + selected.length + '</em></h2><button class="pick-close" type="button" data-pick="close">关闭</button></div><p class="pick-hint">点开即可预览。可以同时留下不同学科的笔记。</p>' + body + "</div></div>";
+    return '<div class="pick-layer" role="dialog" aria-modal="true" aria-label="已选笔记"><div class="pick-sheet"><div class="pick-sheet-head"><h2>已选笔记 <em>' + selected.length + '</em></h2><button class="pick-close" type="button" data-pick="close">关闭</button></div>' + body + "</div></div>";
   }
 
   function syncPickLayer() {
@@ -496,7 +496,7 @@
     const groups = sortedPaperGroups();
     const body = groups.map(function (group) {
       const rows = group.items.map(function (item) {
-        return '<li class="paper-row"><button class="paper-title" type="button" data-outline="' + esc(item.title) + '"><span>' + esc(item.title) + '</span><span class="paper-outline-cue">题型</span></button>' +
+        return '<li class="paper-row"><button class="paper-title" type="button" data-outline="' + esc(item.title) + '"><span class="paper-title-name">' + esc(item.title) + '</span><span class="paper-outline-cue">题型</span></button>' +
           '<table class="qty"><thead><tr><th>供量/余量</th></tr></thead><tbody><tr><td>' + esc(item.qty) + "</td></tr></tbody></table></li>";
       }).join("");
       const order = group.subject === "公共管理学"
@@ -512,7 +512,8 @@
       '<article class="papers">' +
         "<h2>27预测卷</h2>" +
         '<p class="papers-lead">' + esc(paperNote()) + "</p>" +
-        '<div class="paper-read">' + fileButton("sample", "样卷") +
+        '<div class="paper-read"><div class="paper-sample">' + fileButton("sample", "样卷") +
+          '<p class="paper-sample-note">点击下方对应院校，查看该校预测卷的题型设计。</p></div>' +
           '<span class="paper-guide"><span class="paper-read-cue">购买预测卷请阅读' + arrowSvg() + "</span>" +
           fileButton("guide", "试卷购买说明") + "</span></div>" +
         body +
