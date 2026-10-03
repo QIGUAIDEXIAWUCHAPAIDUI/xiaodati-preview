@@ -976,15 +976,13 @@ a { color: inherit; }
 
 .paper-outline-cue {
   flex: none;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #ffffff 0%, #e7e7e7 100%);
+  padding: 0;
+  background: none;
   color: #6a6a6a;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(155, 155, 155, 0.18);
 }
 
 .outline-layer {
