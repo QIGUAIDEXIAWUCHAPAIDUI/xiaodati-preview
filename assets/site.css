@@ -727,7 +727,7 @@ a { color: inherit; }
 
 .unfit,
 .ban {
-  color: var(--seal);
+  color: #8d1d1d;
   font-weight: 700;
 }
 
