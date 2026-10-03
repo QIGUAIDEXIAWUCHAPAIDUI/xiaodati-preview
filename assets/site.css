@@ -305,8 +305,121 @@ a { color: inherit; }
   box-shadow: var(--glow-dark);
 }
 
+.pick-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 0;
+}
+
+.pick-toggle,
+.pick-done,
+.pick-close {
+  border: 0;
+  border-radius: 980px;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  cursor: pointer;
+}
+
+.pick-toggle,
+.pick-close {
+  border: 1.5px solid #636366;
+  background: var(--pill-light);
+  color: var(--ink);
+  box-shadow: var(--glow-light);
+}
+
+.pick-toggle.is-on,
+.pick-done {
+  border-color: transparent;
+  background: var(--pill-dark);
+  color: #fff;
+  box-shadow: var(--glow-dark);
+}
+
+.pick-done:disabled {
+  background: var(--pill-soft);
+  color: var(--gray2);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.pick-mark {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #fff;
+}
+
+.pick-mark svg {
+  width: 14px;
+  height: 14px;
+}
+
+.card.is-picked .pick-mark {
+  background: var(--pill-dark);
+  border-color: transparent;
+}
+
+.card.is-picked {
+  box-shadow: 0 0 0 2px #1d1d1f, var(--shadow);
+}
+
+.pick-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: auto;
+  padding: 48px 20px 72px;
+  background: rgba(242, 242, 247, 0.82);
+  backdrop-filter: saturate(180%) blur(18px);
+}
+
+.pick-sheet {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.pick-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pick-sheet h2 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.pick-sheet h2 em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.pick-hint {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
 .count-line {
-  margin: 28px 0 4px;
+  margin: 18px 0 4px;
   color: var(--muted);
   font-size: 13px;
 }
@@ -337,6 +450,7 @@ a { color: inherit; }
 }
 
 .card {
+  position: relative;
   display: block;
   width: 100%;
   padding: 12px 12px 14px;

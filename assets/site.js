@@ -23,6 +23,9 @@
     light: -1,
     paperLight: -1,
     paperKind: "",
+    picking: false,
+    picked: {},
+    pickedOpen: false,
   };
 
   function esc(value) {
@@ -81,8 +84,27 @@
     return pages;
   }
 
-  function catalogHtml() {
-    const list = filtered();
+  function pickedIds() {
+    return Object.keys(state.picked);
+  }
+
+  function cardHtml(book, selectable) {
+    const on = selectable && !!state.picked[book.id];
+    const mark = selectable
+      ? '<span class="pick-mark" aria-hidden="true">' + (on ? "<svg viewBox=\"0 0 16 16\"><path d=\"M3.2 8.2 6.4 11.4 12.8 4.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>" : "") + "</span>"
+      : "";
+    return (
+      '<button class="card' + (on ? " is-picked" : "") + '" type="button" data-id="' + esc(book.id) + '"' +
+        (selectable ? ' aria-pressed="' + (on ? "true" : "false") + '"' : "") + ">" +
+        mark +
+        '<img src="' + esc(thumbSrc(book)) + '" alt="' + esc(book.title) + '封面" loading="lazy">' +
+        "<h3>" + esc(book.title) + "</h3>" +
+        '<p class="meta">' + badge(book.kind) + esc(book.pages) + " 页</p>" +
+      "</button>"
+    );
+  }
+
+  function groupedBooks(list) {
     const groups = [];
     list.forEach(function (book) {
       let group = groups.filter(function (item) { return item.subject === book.subject; })[0];
@@ -101,21 +123,49 @@
         return a.title.localeCompare(b.title, "zh", { numeric: true, sensitivity: "base" });
       });
     });
+    return groups;
+  }
+
+  function pickBar() {
+    const count = pickedIds().length;
+    const on = state.picking;
+    const done = on
+      ? '<button class="pick-done" type="button" data-pick="done"' + (count ? "" : " disabled") + ">选择完毕" + (count ? " · " + count : "") + "</button>"
+      : "";
+    return '<div class="pick-bar"><button class="pick-toggle' + (on ? " is-on" : "") + '" type="button" data-pick="toggle" aria-pressed="' + (on ? "true" : "false") + '">' + (on ? "选择中" : "选择") + "</button>" + done + "</div>";
+  }
+
+  function catalogHtml() {
+    const list = filtered();
+    const groups = groupedBooks(list);
     const body = groups.length
       ? groups.map(function (group) {
-          const cards = group.books.map(function (book) {
-            return (
-              '<button class="card" type="button" data-id="' + esc(book.id) + '">' +
-                '<img src="' + esc(thumbSrc(book)) + '" alt="' + esc(book.title) + '封面" loading="lazy">' +
-                "<h3>" + esc(book.title) + "</h3>" +
-                '<p class="meta">' + badge(book.kind) + esc(book.pages) + " 页</p>" +
-              "</button>"
-            );
-          }).join("");
+          const cards = group.books.map(function (book) { return cardHtml(book, state.picking); }).join("");
           return '<section class="group"><h2>' + esc(group.subject) + " <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
         }).join("")
       : '<p class="empty">没有对上的教材。</p>';
-    return '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body;
+    return pickBar() + '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body;
+  }
+
+  function pickLayerHtml() {
+    const selected = books.filter(function (book) { return state.picked[book.id]; });
+    const groups = groupedBooks(selected);
+    const body = groups.map(function (group) {
+      const cards = group.books.map(function (book) { return cardHtml(book, false); }).join("");
+      return '<section class="group"><h2>' + esc(group.subject) + " <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
+    }).join("");
+    return '<div class="pick-layer" role="dialog" aria-modal="true" aria-label="已选笔记"><div class="pick-sheet"><div class="pick-sheet-head"><h2>已选笔记 <em>' + selected.length + '</em></h2><button class="pick-close" type="button" data-pick="close">关闭</button></div><p class="pick-hint">点开即可预览。可以同时留下不同学科的笔记。</p>' + body + "</div></div>";
+  }
+
+  function syncPickLayer() {
+    const old = app.querySelector(".pick-layer");
+    if (old) old.remove();
+    if (!state.pickedOpen || currentId()) {
+      if (!state.pickedOpen) document.body.style.overflow = "";
+      return;
+    }
+    app.insertAdjacentHTML("beforeend", pickLayerHtml());
+    document.body.style.overflow = "hidden";
   }
 
   function sortedPaperGroups() {
@@ -207,6 +257,7 @@
       window.scrollTo(0, state.scroll || 0);
     }
     paintCatalog();
+    syncPickLayer();
   }
 
   function renderNotice() {
@@ -513,8 +564,42 @@
       renderIndex();
       return;
     }
+    if (event.target.classList && event.target.classList.contains("pick-layer")) {
+      state.pickedOpen = false;
+      syncPickLayer();
+      return;
+    }
+    const pick = event.target.closest("[data-pick]");
+    if (pick) {
+      const action = pick.getAttribute("data-pick");
+      if (action === "toggle") {
+        state.picking = !state.picking;
+        if (!state.picking) state.pickedOpen = false;
+        paintCatalog();
+        syncPickLayer();
+        return;
+      }
+      if (action === "done") {
+        if (!pickedIds().length) return;
+        state.pickedOpen = true;
+        syncPickLayer();
+        return;
+      }
+      if (action === "close") {
+        state.pickedOpen = false;
+        syncPickLayer();
+      }
+      return;
+    }
     const card = event.target.closest("[data-id]");
     if (card) {
+      if (state.picking && !card.closest(".pick-layer")) {
+        const id = card.getAttribute("data-id");
+        if (state.picked[id]) delete state.picked[id];
+        else state.picked[id] = true;
+        paintCatalog();
+        return;
+      }
       state.scroll = window.scrollY;
       location.hash = "#/" + card.getAttribute("data-id");
       return;
@@ -560,7 +645,17 @@
   });
 
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") closeLight();
+    if (event.key === "Escape") {
+      if (document.querySelector(".light")) {
+        closeLight();
+        return;
+      }
+      if (state.pickedOpen) {
+        state.pickedOpen = false;
+        syncPickLayer();
+      }
+      return;
+    }
     if (!document.querySelector(".light")) return;
     if (state.paperLight >= 0 && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
       const total = paperFileOf(state.paperKind).pages.length;
