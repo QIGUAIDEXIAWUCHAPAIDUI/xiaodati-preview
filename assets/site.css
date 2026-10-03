@@ -358,6 +358,9 @@ a { color: inherit; }
   font-size: 16px;
   font-weight: 500;
   line-height: 1.65;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .pick-mark {
@@ -658,10 +661,15 @@ a { color: inherit; }
   border-left: 2px solid #b6b6b6;
 }
 
-.spot b,
-.price b,
-.yen {
+.spot b {
   color: var(--seal);
+  font-weight: 700;
+}
+
+.yen,
+.price b,
+.hot {
+  color: #8d1d1d;
   font-weight: 700;
 }
 
@@ -848,9 +856,10 @@ a { color: inherit; }
 .paper-guide {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 22px;
+  min-height: 74px;
 }
 
 .paper-read-cue {
@@ -917,6 +926,9 @@ a { color: inherit; }
   font-weight: 500;
   line-height: 1.6;
   letter-spacing: -0.015em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .paper-group:has(.paper-order) h3 {
@@ -1164,5 +1176,5 @@ a { color: inherit; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
   .papers-slot { width: auto; }
   .paper-read { align-items: flex-start; }
-  .paper-guide { margin-top: 0; }
+  .paper-guide { min-height: 0; }
 }
