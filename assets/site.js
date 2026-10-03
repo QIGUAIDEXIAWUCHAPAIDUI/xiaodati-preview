@@ -483,8 +483,8 @@
       ? '<path d="M9 16.5h12" stroke-width="2.1"/><path d="M9 22h12M9 26.5h8"/>'
       : '<path d="M9 17h12M9 22h12M9 27h8"/>';
     return '<svg class="file-ico" viewBox="0 0 32 40" aria-hidden="true">' +
-      '<path d="M6.8 2.2h12.2L25.8 9.1V34.4a3.4 3.4 0 0 1-3.4 3.4H6.8a3.4 3.4 0 0 1-3.4-3.4V5.6a3.4 3.4 0 0 1 3.4-3.4z" fill="#f5f5f7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' +
-      '<path d="M18.7 2.5v6.6h6.7" fill="#e5e5ea" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<path d="M6.8 2.2h12.2L25.8 9.1V34.4a3.4 3.4 0 0 1-3.4 3.4H6.8a3.4 3.4 0 0 1-3.4-3.4V5.6a3.4 3.4 0 0 1 3.4-3.4z" fill="#ffffff" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<path d="M18.7 2.5v6.6h6.7" fill="#e7e7e7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>' +
       '<g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">' + marks + "</g></svg>";
   }
 
@@ -496,7 +496,7 @@
     const groups = sortedPaperGroups();
     const body = groups.map(function (group) {
       const rows = group.items.map(function (item) {
-        return '<li class="paper-row"><button class="paper-title" type="button" data-outline="' + esc(item.title) + '"><span class="paper-title-name">' + esc(item.title) + '</span><span class="paper-outline-cue">题型</span></button>' +
+        return '<li class="paper-row"><button class="paper-title" type="button" data-outline="' + esc(item.title) + '"><span class="paper-title-name">' + esc(item.title) + '</span><span class="paper-outline-cue">题型预览</span></button>' +
           '<table class="qty"><thead><tr><th>供量/余量</th></tr></thead><tbody><tr><td>' + esc(item.qty) + "</td></tr></tbody></table></li>";
       }).join("");
       const order = group.subject === "公共管理学"
@@ -561,7 +561,7 @@
     }).join("");
     var node = document.createElement("div");
     node.className = "outline-layer";
-    node.innerHTML = '<article class="outline-sheet" role="dialog" aria-modal="true" aria-label="题型"><button class="pick-close outline-close" type="button" data-outline-close="1">关闭</button><h2>' + esc(school) + "</h2>" + (round ? '<p class="outline-round">' + esc(round) + "</p>" : "") + parts + "</article>";
+    node.innerHTML = '<article class="outline-sheet" role="dialog" aria-modal="true" aria-label="题型预览"><button class="pick-close outline-close" type="button" data-outline-close="1">关闭</button><h2>' + esc(school) + "</h2>" + (round ? '<p class="outline-round">' + esc(round) + "</p>" : "") + parts + "</article>";
     document.body.appendChild(node);
     document.body.style.overflow = "hidden";
   }
