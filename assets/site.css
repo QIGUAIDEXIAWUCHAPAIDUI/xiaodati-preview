@@ -413,6 +413,10 @@ a { color: inherit; }
   gap: 16px;
 }
 
+.pick-grid {
+  margin-top: 28px;
+}
+
 .pick-sheet h2 {
   margin: 0;
   font-size: 32px;

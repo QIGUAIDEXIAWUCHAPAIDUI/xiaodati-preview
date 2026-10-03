@@ -150,11 +150,12 @@
 
   function pickLayerHtml() {
     const selected = books.filter(function (book) { return state.picked[book.id]; });
-    const groups = groupedBooks(selected);
-    const body = groups.map(function (group) {
-      const cards = group.books.map(function (book) { return cardHtml(book, false); }).join("");
-      return '<section class="group"><h2>' + esc(group.subject) + " <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
-    }).join("");
+    selected.sort(function (a, b) {
+      const bySubject = a.subject.localeCompare(b.subject, "zh", { numeric: true, sensitivity: "base" });
+      if (bySubject) return bySubject;
+      return a.title.localeCompare(b.title, "zh", { numeric: true, sensitivity: "base" });
+    });
+    const body = '<div class="grid pick-grid">' + selected.map(function (book) { return cardHtml(book, false); }).join("") + "</div>";
     return '<div class="pick-layer" role="dialog" aria-modal="true" aria-label="已选笔记"><div class="pick-sheet"><div class="pick-sheet-head"><h2>已选笔记 <em>' + selected.length + '</em></h2><button class="pick-close" type="button" data-pick="close">关闭</button></div>' + body + "</div></div>";
   }
 
