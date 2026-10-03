@@ -26,6 +26,7 @@
     picking: false,
     picked: {},
     pickedOpen: false,
+    outline: "",
   };
 
   function esc(value) {
@@ -132,7 +133,7 @@
     const done = on
       ? '<button class="pick-done" type="button" data-pick="done"' + (count ? "" : " disabled") + ">选择完毕" + (count ? " · " + count : "") + "</button>"
       : "";
-    return '<div class="pick-bar"><button class="pick-toggle' + (on ? " is-on" : "") + '" type="button" data-pick="toggle" aria-pressed="' + (on ? "true" : "false") + '">' + (on ? "选择中" : "选择") + "</button>" + done + "</div>";
+    return '<div class="pick-intro"><div class="pick-bar"><button class="pick-toggle' + (on ? " is-on" : "") + '" type="button" data-pick="toggle" aria-pressed="' + (on ? "true" : "false") + '">' + (on ? "选择中" : "选择") + "</button>" + done + '</div><p class="pick-note">可以跨类目选择笔记哦，例如选择“公管”类目X本+“研究方法”类目X本；点击“选择完毕”系统会自动将笔记放在一起，方便同学对比浏览哦～</p></div>';
   }
 
   function catalogHtml() {
@@ -495,7 +496,7 @@
     const groups = sortedPaperGroups();
     const body = groups.map(function (group) {
       const rows = group.items.map(function (item) {
-        return '<li class="paper-row"><p class="paper-title">' + esc(item.title) + "</p>" +
+        return '<li class="paper-row"><button class="paper-title" type="button" data-outline="' + esc(item.title) + '"><span>' + esc(item.title) + '</span><span class="paper-outline-cue">题型</span></button>' +
           '<table class="qty"><thead><tr><th>供量/余量</th></tr></thead><tbody><tr><td>' + esc(item.qty) + "</td></tr></tbody></table></li>";
       }).join("");
       const order = group.subject === "公共管理学"
@@ -519,8 +520,54 @@
     window.scrollTo(0, 0);
   }
 
+  function cnIndex(n) {
+    var digits = "一二三四五六七八九十";
+    if (n >= 1 && n <= 10) return digits.charAt(n - 1);
+    if (n < 20) return "十" + digits.charAt(n - 11);
+    return String(n);
+  }
+
+  function outlineOf(title) {
+    var list = window.PAPER_OUTLINES || [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].title === title) return list[i];
+    }
+    return null;
+  }
+
+  function closeOutline() {
+    state.outline = "";
+    var node = document.querySelector(".outline-layer");
+    if (node) node.remove();
+    if (!state.pickedOpen) document.body.style.overflow = "";
+  }
+
+  function showOutline(title) {
+    var item = outlineOf(title);
+    closeOutline();
+    if (!item) return;
+    state.outline = title;
+    var school = title.split(" ")[0];
+    var round = (title.match(/预测卷（[一二]）/) || [""])[0];
+    var parts = item.parts.map(function (part) {
+      var sections = part.sections.map(function (section, index) {
+        var blanks = "";
+        for (var n = 1; n <= section[1]; n++) blanks += "<li>" + n + ".</li>";
+        return '<div class="outline-sec"><p>' + cnIndex(index + 1) + "、" + esc(section[0]) + "</p><ol>" + blanks + "</ol></div>";
+      }).join("");
+      var code = part.code ? "<span>" + esc(part.code) + "</span>" : "";
+      return '<section class="outline-part"><p class="outline-sub">' + esc(part.subject) + code + "</p>" + sections + "</section>";
+    }).join("");
+    var node = document.createElement("div");
+    node.className = "outline-layer";
+    node.innerHTML = '<article class="outline-sheet" role="dialog" aria-modal="true" aria-label="题型"><button class="pick-close outline-close" type="button" data-outline-close="1">关闭</button><h2>' + esc(school) + "</h2>" + (round ? '<p class="outline-round">' + esc(round) + "</p>" : "") + parts + "</article>";
+    document.body.appendChild(node);
+    document.body.style.overflow = "hidden";
+  }
+
   function render() {
     closeLight();
+    closeOutline();
     const id = currentId();
     if (id === "notice") {
       renderNotice();
@@ -591,6 +638,11 @@
       }
       return;
     }
+    const outlineBtn = event.target.closest("[data-outline]");
+    if (outlineBtn) {
+      showOutline(outlineBtn.getAttribute("data-outline"));
+      return;
+    }
     const card = event.target.closest("[data-id]");
     if (card) {
       if (state.picking && !card.closest(".pick-layer")) {
@@ -623,6 +675,14 @@
   });
 
   document.addEventListener("click", function (event) {
+    if (event.target.classList && event.target.classList.contains("outline-layer")) {
+      closeOutline();
+      return;
+    }
+    if (event.target.closest("[data-outline-close]")) {
+      closeOutline();
+      return;
+    }
     const close = event.target.closest("[data-close]");
     const step = event.target.closest("[data-step]");
     if (close) {
@@ -648,6 +708,10 @@
     if (event.key === "Escape") {
       if (document.querySelector(".light")) {
         closeLight();
+        return;
+      }
+      if (document.querySelector(".outline-layer")) {
+        closeOutline();
         return;
       }
       if (state.pickedOpen) {

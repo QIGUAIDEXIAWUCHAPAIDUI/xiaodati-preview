@@ -347,6 +347,15 @@ a { color: inherit; }
   cursor: not-allowed;
 }
 
+.pick-note {
+  margin: 10px 0 0;
+  max-width: 44em;
+  color: #3a3a3c;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
 .pick-mark {
   position: absolute;
   z-index: 1;
@@ -911,9 +920,101 @@ a { color: inherit; }
 }
 
 .paper-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
   font-size: 16px;
   line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+}
+
+.paper-outline-cue {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.outline-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  overflow: auto;
+  padding: 40px 16px 72px;
+  background: rgba(242, 242, 247, 0.82);
+  backdrop-filter: saturate(180%) blur(18px);
+}
+
+.outline-sheet {
+  position: relative;
+  width: min(680px, 100%);
+  margin: 0 auto;
+  padding: 56px 48px 64px;
+  border: 1px solid #1d1d1f;
+  background: #fff;
+  color: var(--ink);
+}
+
+.outline-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.outline-sheet h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.outline-round,
+.outline-sub {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.outline-sub span {
+  margin-left: 8px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.outline-part {
+  margin-top: 28px;
+}
+
+.outline-sec {
+  margin-top: 18px;
+}
+
+.outline-sec p {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.outline-sec ol {
+  margin: 8px 0 0;
+  padding: 0 0 0 1.6em;
+  list-style: none;
+}
+
+.outline-sec li {
+  margin: 3px 0;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
 }
 
 .qty {
