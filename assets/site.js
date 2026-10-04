@@ -272,7 +272,7 @@
         "<h2>笔记购买说明</h2>" +
         '<p class="kicker">不创作低质、烂大街的笔记，也不接受低廉的知识创作报酬。</p>' +
         "<p>同学你好：首先，非常感谢你的咨询；其次，请再阅览了解如下信息。</p>" +
-        '<figure class="poster"><img src="assets/buy-guide.jpg?v=2" alt="购买方式见此图" width="1290" height="1122"></figure>' +
+        '<figure class="poster"><img src="assets/buy-guide.jpg?v=3" alt="购买方式见此图" width="1459" height="1649"></figure>' +
         '<section class="panel panel-ink">' +
           "<h3>谁在买</h3>" +
           "<p>购买资料的同学报考院校包括但不限于：广西大学、南京大学、中国农业大学、四川大学、电子科技大学、对外经济贸易大学、华南理工大学、西南财经大学、浙江财经大学、大连理工大学、郑州大学、南京工业大学、西南政法大学、中国人民大学、吉林大学、福州大学等 30 所院校。为什么同学们买了自己直系学长学姐的笔记，还会买我的笔记？</p>" +
