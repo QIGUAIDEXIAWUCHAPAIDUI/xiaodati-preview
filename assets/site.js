@@ -550,7 +550,7 @@
     if (!item) return;
     state.outline = title;
     var school = title.split(" ")[0];
-    var round = (title.match(/预测卷（[一二]）/) || [""])[0];
+    var round = (title.match(/预测卷[（(][一二][）)]/) || [""])[0];
     var parts = item.parts.map(function (part) {
       var sections = part.sections.map(function (section, index) {
         var blanks = "";
