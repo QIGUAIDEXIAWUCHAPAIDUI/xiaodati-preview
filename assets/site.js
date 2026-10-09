@@ -35,12 +35,17 @@
     });
   }
 
+  function previewBust(book) {
+    if (book.id === "efddb09acb" || book.id === "a706096160") return "?v=3";
+    return "";
+  }
+
   function pageSrc(book, page) {
-    return "preview/" + book.id + "/p" + String(page).padStart(3, "0") + ".jpg";
+    return "preview/" + book.id + "/p" + String(page).padStart(3, "0") + ".jpg" + previewBust(book);
   }
 
   function thumbSrc(book) {
-    return "preview/" + book.id + "/thumb.jpg";
+    return "preview/" + book.id + "/thumb.jpg" + previewBust(book);
   }
 
   function currentId() {
