@@ -36,7 +36,7 @@
   }
 
   function previewBust(book) {
-    if (book.id === "efddb09acb" || book.id === "a706096160") return "?v=3";
+    if (book.id === "efddb09acb" || book.id === "a706096160") return "?v=4";
     return "";
   }
 
