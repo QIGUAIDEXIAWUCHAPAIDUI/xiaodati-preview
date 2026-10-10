@@ -298,7 +298,7 @@
             "<tr><td>第二份</td><td class=\"yen\">120 元</td><td>买 2 本笔记 = <span class=\"hot\">150＋120</span>＝<b>270 元</b></td></tr>" +
             "<tr><td>第三份</td><td class=\"yen\">100 元</td><td>买 3 本笔记 = <span class=\"hot\">150＋120＋100</span>＝<b>370 元</b></td></tr>" +
           "</tbody></table>" +
-          "<p>综合类笔记单独定价 <b class=\"hot\">200 元</b>，不参与折扣。</p>" +
+          "<p>综合类笔记单独定价 <b class=\"hot\">200 元</b>，不参与折扣；<span class=\"hot\">名字带“*”的笔记不参与折扣规则</span>。</p>" +
           "<p>优惠持续有。比如第一次买了一本 <span class=\"hot\">150</span>，隔一段时间又想买第二本笔记，那么第二本笔记依然是 <span class=\"hot\">120</span>。</p>" +
         "</section>" +
         '<section class="panel panel-stop">' +
