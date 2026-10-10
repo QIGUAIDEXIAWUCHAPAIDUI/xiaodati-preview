@@ -110,6 +110,8 @@ def cover_title(doc: pymupdf.Document, filename: str) -> str:
     mark = re.search(r"[①②③④⑤]", filename)
     if mark and mark.group() not in title:
         title = f"{title}{mark.group()}"
+    if "*" in filename and "*" not in title:
+        title = f"{title}*"
     return title
 
 
