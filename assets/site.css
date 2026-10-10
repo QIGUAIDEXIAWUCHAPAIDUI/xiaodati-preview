@@ -440,6 +440,11 @@ a { color: inherit; }
   font-size: 13px;
 }
 
+.count-line .hot {
+  margin-left: 8px;
+  font-size: 15px;
+}
+
 .group { margin: 36px 0 8px; }
 
 .group h2 {

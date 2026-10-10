@@ -150,7 +150,7 @@
           return '<section class="group"><h2>' + esc(group.subject) + " <em>" + group.books.length + "</em></h2><div class=\"grid\">" + cards + "</div></section>";
         }).join("")
       : '<p class="empty">没有对上的教材。</p>';
-    return pickBar() + '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + " 本</p>" + body;
+    return pickBar() + '<p class="count-line">共 ' + books.length + " 本，当前 " + list.length + ' 本<span class="hot">请一定阅读“笔记购买说明”。</span></p>' + body;
   }
 
   function pickLayerHtml() {
