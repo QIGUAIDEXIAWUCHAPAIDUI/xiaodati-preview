@@ -42,7 +42,7 @@ RULES = [
     ("土地管理", ["土地"]),
     ("心理学", ["心理学"]),
     ("教育学", ["教育学", "教育管理"]),
-    ("研究方法", ["研究方法", "统计学", "社会统计", "定量", "质的研究", "实证方法", "计算社会科学", "量表", "计算题"]),
+    ("研究方法", ["研究方法", "统计学", "社会统计", "定量", "质的研究", "实证方法", "计算社会科学", "量表", "计算题", "SPSS", "Stata", "统计分析"]),
     ("经济学", ["经济学", "财政学", "数字经济", "补记"]),
     ("政治学", ["政治学", "政治科学", "政府与政治", "政治制度", "国际关系", "国际政治", "全球治理"]),
     ("社会学与社会工作", ["社会学", "社区"]),
@@ -122,16 +122,21 @@ def subject_of(text: str) -> str:
     return "其他"
 
 
+FRONT_N = 8
+MID_N = 7
+BACK_N = 7
+
+
 def page_ranges(n: int) -> tuple[list[int], list[int], list[int]]:
     if n <= 0:
         return [], [], []
-    front = list(range(1, min(8, n) + 1))
-    back = list(range(max(1, n - 4), n + 1))
-    if n <= 5:
+    front = list(range(1, min(FRONT_N, n) + 1))
+    back = list(range(max(1, n - BACK_N + 1), n + 1))
+    if n <= MID_N:
         mid = list(range(1, n + 1))
     else:
-        start = (n - 5) // 2 + 1
-        mid = list(range(start, start + 5))
+        start = (n - MID_N) // 2 + 1
+        mid = list(range(start, start + MID_N))
     return front, mid, back
 
 
