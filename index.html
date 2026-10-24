@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小大题系列笔记预览站</title>
+  <meta name="description" content="笔记展示开头、正中、最后部分页码。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%233c444b'/%3E%3Crect x='7' y='6' width='18' height='2' fill='%238d1d1d'/%3E%3Crect x='9' y='11' width='14' height='14' fill='none' stroke='%23ffffff' stroke-width='1.1'/%3E%3Cpath d='M12 15h8M12 18.2h8M12 21.4h5' stroke='%23ffffff' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/site.css?v=35">
+</head>
+<body>
+  <div id="app"></div>
+  <p class="visit-count">历史访问量 <span id="visit-shown">170</span></p>
+  <script>
+    (function () {
+      var shown = document.getElementById("visit-shown");
+      var base = 170;
+      var anchor = 6;
+      fetch("https://events.vercount.one/api/v2/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: "https://qiguaidexiawuchapaidui.github.io/xiaodati-preview/",
+          isNewUv: false
+        })
+      }).then(function (res) {
+        if (!res.ok) throw new Error("bad");
+        return res.json();
+      }).then(function (data) {
+        var n = data && data.data && parseInt(data.data.site_pv, 10);
+        if (!isFinite(n)) return;
+        var value = base + (n - anchor);
+        if (value < base) value = base;
+        shown.textContent = String(value);
+      }).catch(function () {});
+    })();
+  </script>
+  <script src="catalog.js?v=15"></script>
+  <script src="papers.js?v=19"></script>
+  <script src="paper-outline.js?v=5"></script>
+  <script src="papers-access.js?v=1"></script>
+  <script src="assets/site.js?v=47"></script>
+</body>
+</html>
